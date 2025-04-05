@@ -1,0 +1,63 @@
+package com.loja.suplementos.sale.domain;
+
+import java.util.Set;
+
+import com.loja.suplementos.customer.domain.Customer;
+import com.loja.suplementos.customer.domain.DeliveryAddress;
+import com.loja.suplementos.payment.domain.Payment;
+import com.loja.suplementos.shipping.domain.Shipping;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "sale")
+public class Sale {
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
+
+    @ManyToOne
+    @JoinColumn(name = "delivery_address_id")
+    private DeliveryAddress deliveryAddress;
+
+    @OneToOne
+    @JoinColumn(name = "payment_id")
+    private Payment payment;
+
+    @OneToOne
+    @JoinColumn(name = "shipping_id")
+    private Shipping shipping;
+
+    @OneToMany
+    @JoinColumn(name = "sale_id")
+    private Set<SaleItem> saleItems;
+
+    public Sale(Customer customer, DeliveryAddress deliveryAddress, Payment payment, Shipping shipping, Set<SaleItem> saleItems) {
+        this.customer = customer;
+        this.deliveryAddress = deliveryAddress;
+        this.payment = payment;
+        this.shipping = shipping;
+        this.saleItems = saleItems;
+    }
+
+    public void addSaleItem(SaleItem saleItem) {
+        this.saleItems.add(saleItem);
+    }
+
+    public void removeSaleItem(SaleItem saleItem) {
+        this.saleItems.removeIf(item -> item.getId().equals(saleItem.getId()));
+    }
+}
