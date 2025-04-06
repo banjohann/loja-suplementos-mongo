@@ -6,15 +6,19 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
+@NoArgsConstructor
 @Table(name = "delivery_address")
 public class DeliveryAddress {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) 
     private Long id;
+
+    private Long customerId;
 
     private String street;
 
@@ -28,12 +32,13 @@ public class DeliveryAddress {
 
     private String zipCode;
 
-    public DeliveryAddress(String street, String number, String neighborhood, String city, String state, String zipCode) {
+    public DeliveryAddress(String street, String number, String neighborhood, String city, String state, String zipCode, Long customerId) {
         this.street = street;
         this.number = number;
         this.neighborhood = neighborhood;
         this.city = city;
         this.state = state;
         this.zipCode = zipCode;
+        this.customerId = customerId;
     }
 }

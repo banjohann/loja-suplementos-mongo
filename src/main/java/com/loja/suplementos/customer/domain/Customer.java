@@ -4,11 +4,23 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "customer")
 public class Customer {
 
@@ -18,16 +30,21 @@ public class Customer {
 
     private String name;
 
+    private String lastName;
+
     private String email;
 
     private String phone;
 
     private String cpf;
 
-    public Customer(String name, String email, String phone, String cpf) {
-        this.name = name;
-        this.email = email;
-        this.phone = phone;
-        this.cpf = cpf;
+    private Date birthDate;
+
+    @OneToMany
+    @JoinColumn(name = "customerId")
+    private List<DeliveryAddress> deliveryAddresses = new ArrayList<>();
+
+    public void addDeliveryAddress(DeliveryAddress deliveryAddress) {
+        this.deliveryAddresses.add(deliveryAddress);
     }
 }

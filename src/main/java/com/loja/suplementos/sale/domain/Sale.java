@@ -42,7 +42,7 @@ public class Sale {
     private Shipping shipping;
 
     @OneToMany
-    @JoinColumn(name = "sale_id")
+    @JoinColumn(name = "saleId")
     private Set<SaleItem> saleItems;
 
     public Sale(Customer customer, DeliveryAddress deliveryAddress, Payment payment, Shipping shipping, Set<SaleItem> saleItems) {
