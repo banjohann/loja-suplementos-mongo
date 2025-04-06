@@ -12,7 +12,7 @@
     <div class="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md">
         <h1 class="text-2xl font-bold mb-4">Criar novo cliente</h1>
         <div th:replace="~{partials/toast :: toast}"></div>
-        <form th:action="@{/customers/new}" th:object="${customer}" method="post">
+        <form id="customerForm" method="POST" action="/api/customers/save">
             <div class="mb-4">
                 <label for="name" class="block text-gray-700">Nome:</label>
                 <input type="text" id="name" name="name" class="mt-1 p-2 border rounded w-full" required/>
@@ -46,6 +46,8 @@
 </body>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('customerForm').addEventListener('submit', submitForm);
+
         flatpickr("#birthDate", {
             dateFormat: "d/m/Y"
         });
@@ -53,5 +55,33 @@
         VMasker(document.querySelector("#cpf")).maskPattern("999.999.999-99");
         VMasker(document.querySelector("#phoneNumber")).maskPattern("(99) 99999-9999");
     });
+
+    function submitForm(event) {
+        event.preventDefault();
+
+        const form = document.getElementById('customerForm');
+        const formData = new FormData(form);
+        const data = {};
+        formData.forEach((value, key) => {
+            data[key] = value;
+        });
+
+        fetch('/api/customers/save', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        }).then(response => {
+            console.log(response)
+            if (response.ok) {
+                window.location.href = '/customers';
+            } else {
+                response.json().then(data => {
+                    showToast(data.errorMessage || 'Falha ao criar cliente');
+                });
+            }
+        });
+    }
 </script>
 </html>

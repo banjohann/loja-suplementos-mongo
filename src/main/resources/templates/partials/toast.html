@@ -1,8 +1,25 @@
 <div th:fragment="toast">
-    <div class="toast">
-        <div th:if="${errorMessage}" class="bg-red-400 text-white p-4 rounded mb-4 flex justify-between items-center">
-            <span th:text="${errorMessage}"></span>
-            <button type="button" class="text-white text-xxl" onclick="this.parentElement.style.display='none'">&times;</button>
+    <div id="toast" class="toast hidden">
+        <div class="bg-red-400 text-white p-4 rounded mb-4 flex justify-between items-center">
+            <span id="error-message" th:text="${errorMessage}"></span>
+            <button type="button" class="text-white text-xxl" onclick="dismissToast()">&times;</button>
         </div>
     </div>
+    <script>
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const messageSpan = document.getElementById('error-message')
+
+            messageSpan.innerText = message;
+            toast.classList.remove('hidden');
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 15000);
+        }
+
+        function dismissToast() {
+            const toast = document.getElementById('toast');
+            toast.classList.add('hidden');
+        }
+    </script>
 </div>

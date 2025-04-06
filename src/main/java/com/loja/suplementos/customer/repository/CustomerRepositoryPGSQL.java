@@ -34,7 +34,11 @@ public class CustomerRepositoryPGSQL implements CustomerRepository {
             .createQuery("SELECT c FROM Customer c WHERE c.email = :email OR c.cpf = :cpf", Customer.class)
             .setParameter("email", email)
             .setParameter("cpf", cpf)
-            .getSingleResult();
+            .setMaxResults(1)
+            .getResultList()
+            .stream()
+            .findFirst()
+            .orElse(null);
     }
 
     public void update(Customer customer) {
