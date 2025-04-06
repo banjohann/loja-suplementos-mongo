@@ -9,7 +9,7 @@ import java.util.Date;
 @Slf4j
 public class Utils {
 
-    private static final String format = "yyyy-MM-dd";
+    private static final String format = "dd/MM/yyyy";
 
     public static Date convertStringToDate(String dateString) {
         try {

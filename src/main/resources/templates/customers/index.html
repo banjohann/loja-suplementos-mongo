@@ -12,6 +12,7 @@
             <h1 class="text-2xl font-bold">Lista de Clientes</h1>
             <a href="/customers/new" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 float-right">Adicionar Cliente</a>
         </div>
+        <div th:replace="~{partials/toast :: toast}"></div>
         <table class="min-w-full bg-white">
             <thead>
                 <tr>
@@ -28,7 +29,7 @@
                     <td class="py-2 px-4 border-b" th:text="${customer.email}"></td>
                     <td class="py-2 px-4 border-b">
                         <div class="flex justify-center space-x-2">
-                            <a href="/customers/edit/${customer.id}" class="bg-yellow-500 text-black px-4 py-2 rounded hover:bg-yellow-400">Editar</a>
+                            <a th:href="@{/customers/edit/{id}(id=${customer.id})}" class="bg-yellow-500 text-black px-4 py-2 rounded hover:bg-yellow-400">Editar</a>
                             <button th:data-id="${customer.id}" class="delete-btn bg-red-500 text-white px-4 py-2 rounded hover:bg-red-400">Remover</button>
                         </div>
                     </td>
@@ -59,7 +60,7 @@
             if (response.ok) {
                 window.location.href = '/customers';
             } else {
-                alert('Failed to delete customer');
+               showToast(response.errorMessage || 'Erro ao remover cliente');
             }
         });
     }

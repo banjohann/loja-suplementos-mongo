@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -24,6 +25,14 @@ public class CustomerController {
     @GetMapping("/new")
     public String newCustomerForm(Model model) {
         model.addAttribute("customer", new Customer());
-        return "customers/new";
+        return "customers/newOrEdit";
+    }
+
+    @GetMapping("/edit/{id}")
+    public String editCustomerForm(@PathVariable Long id, Model model) {
+        Customer customer = service.findById(id);
+        model.addAttribute("customer", customer);
+
+        return "customers/newOrEdit";
     }
 }
