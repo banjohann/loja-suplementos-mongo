@@ -1,6 +1,6 @@
 Operações CRUD:
 - Customer [x]
-- DeliveryAddress []
+- DeliveryAddress [x]
 - Payment []
 - Product []
 - - Brand []
