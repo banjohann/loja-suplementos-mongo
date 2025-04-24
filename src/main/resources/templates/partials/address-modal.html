@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <div th:fragment="addressModal">
+        <div id="addressModal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
+            <div class="bg-white p-6 rounded-lg shadow-md w-full max-w-md">
+                <h2 class="text-xl font-bold mb-4">Adicionar Endereço</h2>
+                <form id="addressForm">
+                    <div class="mb-4">
+                        <label for="street" class="block text-gray-700">Rua:</label>
+                        <input type="text" id="street" name="street" class="mt-1 p-2 border rounded w-full" required/>
+                    </div>
+                    <div class="mb-4">
+                        <label for="number" class="block text-gray-700">Número:</label>
+                        <input type="text" id="number" name="number" class="mt-1 p-2 border rounded w-full" required/>
+                    </div>
+                    <div class="mb-4">
+                        <label for="neighborhood" class="block text-gray-700">Bairro:</label>
+                        <input type="text" id="neighborhood" name="neighborhood" class="mt-1 p-2 border rounded w-full" required/>
+                    </div>
+                    <div class="mb-4">
+                        <label for="city" class="block text-gray-700">Cidade:</label>
+                        <input type="text" id="city" name="city" class="mt-1 p-2 border rounded w-full" required/>
+                    </div>
+                    <div class="mb-4">
+                        <label for="state" class="block text-gray-700">Estado:</label>
+                        <input type="text" id="state" name="state" class="mt-1 p-2 border rounded w-full" required/>
+                    </div>
+                    <div class="mb-4">
+                        <label for="zipCode" class="block text-gray-700">CEP:</label>
+                        <input type="text" id="zipCode" name="zipCode" class="mt-1 p-2 border rounded w-full" required/>
+                    </div>
+                    <div class="flex justify-end">
+                        <button type="button" class="bg-gray-500 text-white p-2 rounded mr-2" onclick="closeModal()">Cancelar</button>
+                        <button type="submit" class="bg-blue-500 text-white p-2 rounded">Salvar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</html>

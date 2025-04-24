@@ -1,7 +1,9 @@
 package com.loja.suplementos.customer;
 
 import com.loja.suplementos.customer.domain.Customer;
+import com.loja.suplementos.customer.domain.DeliveryAddress;
 import com.loja.suplementos.customer.repository.CustomerRepository;
+import com.loja.suplementos.customer.repository.DeliveryAddressRepository;
 import com.loja.suplementos.utils.Utils;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -14,9 +16,11 @@ import java.util.Map;
 public class CustomerService {
 
     private final CustomerRepository customerRepository;
+    private final DeliveryAddressRepository deliveryAddressRepository;
 
-    public CustomerService(CustomerRepository customerRepository) {
+    public CustomerService(CustomerRepository customerRepository, DeliveryAddressRepository deliveryAddressRepository) {
         this.customerRepository = customerRepository;
+        this.deliveryAddressRepository = deliveryAddressRepository;
     }
 
     public void save(Map<String, String> params) {
@@ -73,7 +77,34 @@ public class CustomerService {
         customerRepository.delete(customer);
     }
 
+    public void addDeliveryAddress(Long customerId, Map<String, String> params) {
+        Customer customer = this.findById(customerId);
+        if (customer == null) throw new IllegalArgumentException("Cliente não encontrado");
+
+        var deliveryAddress = new DeliveryAddress(
+            params.get("street"),
+            params.get("number"),
+            params.get("neighborhood"),
+            params.get("city"),
+            params.get("state"),
+            params.get("zipCode"),
+            customerId
+        );
+
+        customer.addDeliveryAddress(deliveryAddress);
+
+        deliveryAddressRepository.save(deliveryAddress);
+        customerRepository.save(customer);
+    }
+
     public List<Customer> findAll() {
         return customerRepository.findAll();
+    }
+
+    public void deleteDeliveryAddress(Long id, Long addressId) {
+        var deliveryAddress = deliveryAddressRepository.findById(addressId);
+        if (deliveryAddress == null) throw new IllegalArgumentException("Endereço não encontrado");
+
+        deliveryAddressRepository.delete(deliveryAddress);
     }
 }

@@ -67,33 +67,11 @@
                 data[key] = value;
             });
 
-            if (data.id) {
-                submitEdit(data);
-            } else {
-                submitSave(data);
-            }
-        }
-
-        function submitSave(data) {
-            fetch('/api/customers/save', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            }).then(response => {
-                if (response.ok) {
-                    window.location.href = '/customers';
-                } else {
-                    response.json().then(data => {
-                        showToast(data.errorMessage || 'Falha ao criar cliente');
-                    });
-                }
-            });
+            submitEdit(data);
         }
 
         function submitEdit(data) {
-            fetch('/api/customers/edit/' + data.id, {
+            fetch(`/api/customers/${data.id}` + data.id, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'

@@ -1,12 +1,22 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="toast">
-    <div id="toast" class="toast hidden">
+    <div id="toast" class="toast" th:classappend="${errorMessage == null} ? 'hidden' : ''">
         <div class="bg-red-400 text-white p-4 rounded mb-4 flex justify-between items-center">
             <span id="error-message" th:text="${errorMessage}"></span>
             <button type="button" class="text-white text-xxl" onclick="dismissToast()">&times;</button>
         </div>
     </div>
     <script>
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const toast = document.getElementById('toast');
+            if (toast) {
+                setTimeout(() => {
+                    dismissToast()
+                }, 5000);
+            }
+        });
+
         function showToast(message) {
             const toast = document.getElementById('toast');
             const messageSpan = document.getElementById('error-message')
@@ -14,7 +24,7 @@
             messageSpan.innerText = message;
             toast.classList.remove('hidden');
             setTimeout(() => {
-                toast.classList.add('hidden');
+                dismissToast()
             }, 15000);
         }
 

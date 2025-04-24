@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @AllArgsConstructor
@@ -25,14 +26,29 @@ public class CustomerController {
     @GetMapping("/new")
     public String newCustomerForm(Model model) {
         model.addAttribute("customer", new Customer());
-        return "customers/newOrEdit";
+        return "customers/new";
     }
 
-    @GetMapping("/edit/{id}")
+    @GetMapping("/{id}/edit")
     public String editCustomerForm(@PathVariable Long id, Model model) {
         Customer customer = service.findById(id);
         model.addAttribute("customer", customer);
 
-        return "customers/newOrEdit";
+        return "customers/edit";
+    }
+
+    @GetMapping("/{id}/addresses")
+    public String customerAddresses(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
+        Customer customer = service.findById(id);
+
+        if (customer == null) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Cliente não encontrado");
+            return "redirect:/customers";
+        }
+
+        model.addAttribute("customer", customer);
+        model.addAttribute("deliveryAddresses", customer.getDeliveryAddresses());
+
+        return "customers/addresses";
     }
 }

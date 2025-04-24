@@ -1,3 +1,13 @@
+Operações CRUD:
+- Customer [x]
+- DeliveryAddress []
+- Payment []
+- Product []
+- - Brand []
+- - NutritionalTable []
+- Sale []
+- SaleItem []
+- Shipping []
 
 -- Relatórios:
 - Clientes com vendas entregues (Venda x Cliente x Entrega)

@@ -22,8 +22,8 @@ public class CustomerRestController {
 
     private final CustomerService service;
 
-    @PostMapping("/save")
-    public ResponseEntity<?> createCustomer(@RequestBody Map<String, String> data) {
+    @PostMapping("")
+    public ResponseEntity<?> save(@RequestBody Map<String, String> data) {
         try {
             this.service.save(data);
         } catch (Exception e) {
@@ -35,7 +35,7 @@ public class CustomerRestController {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteCustomer(@PathVariable Long id) {
         try {
             this.service.delete(id);
@@ -47,10 +47,34 @@ public class CustomerRestController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/edit/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<?> editCustomer(@PathVariable Long id, @RequestBody Map<String, String> data) {
         try {
             this.service.update(data);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("errorMessage", e.getMessage()));
+        }
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/{id}/addresses")
+    public ResponseEntity<?> addDeliveryAddress(@PathVariable Long id, @RequestBody Map<String, String> data) {
+        try {
+            this.service.addDeliveryAddress(id, data);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("errorMessage", e.getMessage()));
+        }
+
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("{id}/addresses/{addressId}")
+    public ResponseEntity<?> deleteDeliveryAddress(@PathVariable Long id, @PathVariable Long addressId) {
+        try {
+            this.service.deleteDeliveryAddress(id, addressId);
         } catch (Exception e) {
             log.error(e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("errorMessage", e.getMessage()));

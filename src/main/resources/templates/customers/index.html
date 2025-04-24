@@ -29,9 +29,9 @@
                         <td class="py-2 px-4 border-b" th:text="${customer.email}"></td>
                         <td class="py-2 border-b">
                             <div class="flex justify-center">
-                                <a th:href="@{/customers/edit/{id}(id=${customer.id})}" class="bg-yellow-500 text-black px-4 py-2 rounded hover:bg-yellow-400 mr-2">Editar</a>
+                                <a th:href="@{/customers/{id}/edit(id=${customer.id})}" class="bg-yellow-500 text-black px-4 py-2 rounded hover:bg-yellow-400 mr-2">Editar</a>
                                 <button th:data-id="${customer.id}" class="delete-btn bg-red-500 text-white px-4 py-2 rounded hover:bg-red-400 mr-2">Remover</button>
-                                <a th:href="@{/customers/edit/{id}(id=${customer.id})}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-400">Endereços</a>
+                                <a th:href="@{/customers/{id}/addresses(id=${customer.id})}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-400">Endereços</a>
                             </div>
                         </td>
                     </tr>
@@ -50,8 +50,7 @@
         });
 
         function deleteCustomer(customerId) {
-            console.log(customerId)
-            fetch(`/api/customers/delete/${customerId}`, {
+            fetch(`/api/customers/${customerId}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json'
