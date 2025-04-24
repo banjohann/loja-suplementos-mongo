@@ -1,5 +1,6 @@
 package com.loja.suplementos.customer.domain;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -42,8 +43,8 @@ public class Customer {
 
     private Date birthDate;
 
-    @OneToMany
     @JoinColumn(name = "customerId")
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DeliveryAddress> deliveryAddresses = new ArrayList<>();
 
     public void addDeliveryAddress(DeliveryAddress deliveryAddress) {

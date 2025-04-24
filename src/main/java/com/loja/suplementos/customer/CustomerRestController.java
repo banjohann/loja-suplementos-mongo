@@ -62,19 +62,22 @@ public class CustomerRestController {
     @PostMapping("/{id}/addresses")
     public ResponseEntity<?> addDeliveryAddress(@PathVariable Long id, @RequestBody Map<String, String> data) {
         try {
-            this.service.addDeliveryAddress(id, data);
+            if (data.containsKey("addressId"))
+                this.service.editDeliveryAddress(id, data);
+            else
+                this.service.addDeliveryAddress(id, data);
         } catch (Exception e) {
-            log.error(e.getMessage());
+            log.error("Erro ao salvar endereço", e);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("errorMessage", e.getMessage()));
         }
 
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("{id}/addresses/{addressId}")
-    public ResponseEntity<?> deleteDeliveryAddress(@PathVariable Long id, @PathVariable Long addressId) {
+    @DeleteMapping("/addresses/{addressId}")
+    public ResponseEntity<?> deleteDeliveryAddress(@PathVariable Long addressId) {
         try {
-            this.service.deleteDeliveryAddress(id, addressId);
+            this.service.deleteDeliveryAddress(addressId);
         } catch (Exception e) {
             log.error(e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("errorMessage", e.getMessage()));

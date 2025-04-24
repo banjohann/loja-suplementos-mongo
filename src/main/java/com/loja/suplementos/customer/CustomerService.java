@@ -71,15 +71,17 @@ public class CustomerService {
     }
 
     public void delete(Long customerId) {
-        Customer customer = this.findById(customerId);
-        if (customer == null) throw new IllegalArgumentException("Cliente não encontrado");
+        var customer = customerRepository
+            .findById(customerId)
+            .orElseThrow(() -> new IllegalArgumentException("Cliente não encontrado"));
 
         customerRepository.delete(customer);
     }
 
     public void addDeliveryAddress(Long customerId, Map<String, String> params) {
-        Customer customer = this.findById(customerId);
-        if (customer == null) throw new IllegalArgumentException("Cliente não encontrado");
+        var customer = customerRepository
+            .findById(customerId)
+            .orElseThrow(() -> new IllegalArgumentException("Cliente não encontrado"));
 
         var deliveryAddress = new DeliveryAddress(
             params.get("street"),
@@ -101,10 +103,28 @@ public class CustomerService {
         return customerRepository.findAll();
     }
 
-    public void deleteDeliveryAddress(Long id, Long addressId) {
+    public void deleteDeliveryAddress(Long addressId) {
         var deliveryAddress = deliveryAddressRepository.findById(addressId);
         if (deliveryAddress == null) throw new IllegalArgumentException("Endereço não encontrado");
 
         deliveryAddressRepository.delete(deliveryAddress);
+    }
+
+    public void editDeliveryAddress(Long customerId, Map<String, String> data) {
+        customerRepository
+            .findById(customerId)
+            .orElseThrow(() -> new IllegalArgumentException("Cliente não encontrado"));
+
+        var deliveryAddress = deliveryAddressRepository.findById(Long.valueOf(data.get("addressId")));
+        if (deliveryAddress == null) throw new IllegalArgumentException("Endereço não encontrado");
+
+        deliveryAddress.setStreet(data.get("street"));
+        deliveryAddress.setNumber(data.get("number"));
+        deliveryAddress.setNeighborhood(data.get("neighborhood"));
+        deliveryAddress.setCity(data.get("city"));
+        deliveryAddress.setState(data.get("state"));
+        deliveryAddress.setZipCode(data.get("zipCode"));
+
+        deliveryAddressRepository.save(deliveryAddress);
     }
 }
