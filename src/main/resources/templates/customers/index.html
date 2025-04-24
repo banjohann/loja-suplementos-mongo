@@ -7,13 +7,12 @@
         <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     </head>
     <body class="bg-gray-100">
-        <div th:replace="partials/header :: header"></div>
+        <div th:replace="~{partials/header :: header}"></div>
         <div class="container mx-auto mt-8 p-8 max-w-3xl bg-white rounded-lg shadow-md">
             <div class="flex justify-between items-center mb-4">
                 <h1 class="text-2xl font-bold">Lista de Clientes</h1>
                 <a href="/customers/new" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 float-right">Adicionar Cliente</a>
             </div>
-            <div th:replace="~{partials/toast :: toast}"></div>
             <table class="min-w-full bg-white">
                 <thead>
                     <tr>
@@ -66,4 +65,5 @@
             });
         }
     </script>
+    <script th:src="@{/js/toast.js}"></script>
 </html>

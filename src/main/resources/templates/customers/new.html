@@ -12,7 +12,6 @@
         <div th:replace="partials/header :: header"></div>
         <div class="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md">
             <h1 class="text-2xl font-bold mb-4">Criar novo cliente</h1>
-            <div th:replace="~{partials/toast :: toast}"></div>
             <form id="customerForm" method="POST" action="/api/customers/save">
                 <div class="mb-4">
                     <label for="name" class="block text-gray-700">Nome:</label>
