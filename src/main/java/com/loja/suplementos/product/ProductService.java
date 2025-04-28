@@ -1,5 +1,7 @@
 package com.loja.suplementos.product;
 
+import com.loja.suplementos.product.domain.Brand;
+import com.loja.suplementos.product.domain.NutritionalTable;
 import com.loja.suplementos.product.domain.Product;
 import com.loja.suplementos.product.domain.ProductType;
 import com.loja.suplementos.product.repository.BrandRepository;
@@ -82,5 +84,13 @@ public class ProductService {
         product.setQuantityInStock(Integer.parseInt(data.get("quantityInStock")));
 
         productRepository.update(product);
+    }
+
+    public List<Brand> getAllBrands() {
+        return brandRepository.findAll();
+    }
+
+    public List<NutritionalTable> getAllNutritionalTables() {
+        return nutritionalTableRepository.findAll();
     }
 }

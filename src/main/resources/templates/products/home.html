@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Home</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+    </head>
+    <body class="bg-gray-100">
+        <div th:replace="~{partials/header :: header}"></div>
+        <div class="container mx-auto p-8 max-w-3xl bg-white rounded-lg shadow-md">
+            <h1 class="text-3xl font-bold mb-4">Estoque</h1>
+            <ul class="space-y-4">
+                <li>
+                    <a href="/products" class="block bg-white text-gray-900 text-center py-4 rounded-lg shadow-md transform hover:scale-105 transition-transform duration-200">Produtos</a>
+                </li>
+                <li>
+                    <a href="/marcas" class="block bg-white text-gray-900 text-center py-4 rounded-lg shadow-md transform hover:scale-105 transition-transform duration-200">Marcas</a>
+                </li>
+                <li>
+                    <a href="/nutritional-tables" class="block bg-white text-gray-900 text-center py-4 rounded-lg shadow-md transform hover:scale-105 transition-transform duration-200">Tabelas Nutricionais</a>
+                </li>
+            </ul>
+        </div>
+    </body>
+</html>

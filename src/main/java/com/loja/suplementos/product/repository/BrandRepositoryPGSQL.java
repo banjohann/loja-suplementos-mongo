@@ -7,6 +7,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -17,7 +18,13 @@ public class BrandRepositoryPGSQL implements BrandRepository {
     @PersistenceContext
     private EntityManager entityManager;
 
+    @Override
     public Optional<Brand> findById(Long id) {
         return Optional.ofNullable(entityManager.find(Brand.class, id));
+    }
+
+    @Override
+    public List<Brand> findAll() {
+        return entityManager.createQuery("SELECT b FROM Brand b", Brand.class).getResultList();
     }
 }
