@@ -43,7 +43,7 @@
             document.querySelectorAll(".delete-btn").forEach(button => {
                 button.addEventListener("click", function () {
                     const productId = this.dataset.id;
-                    if (confirm("Are you sure you want to delete this product?")) {
+                    if (confirm("Quer mesmo remover esse produto?")) {
                         deleteProduct(productId);
                     }
                 });

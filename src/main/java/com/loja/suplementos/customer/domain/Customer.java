@@ -50,8 +50,4 @@ public class Customer {
     public void addDeliveryAddress(DeliveryAddress deliveryAddress) {
         this.deliveryAddresses.add(deliveryAddress);
     }
-
-    public void removeDeliveryAddress(Long deliveryAddressId) {
-        this.deliveryAddresses.removeIf(deliveryAddress -> deliveryAddressId.equals(deliveryAddress.getId()));
-    }
 }

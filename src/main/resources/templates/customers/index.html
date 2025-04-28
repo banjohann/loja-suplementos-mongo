@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Customer List</title>
+        <title>Lista de clientes</title>
         <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     </head>
     <body class="bg-gray-100">
@@ -23,7 +23,9 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr th:each="customer : ${customers}">
+                    <tr th:each="customer : ${customers}"
+                        th:onclick="|window.location.href='/customers/' + ${customer.id}|"
+                        class="cursor-pointer hover:bg-gray-100">
                         <td class="py-2 px-4 border-b" th:text="${customer.id}"></td>
                         <td class="py-2 px-4 border-b" th:text="${customer.name}"></td>
                         <td class="py-2 px-4 border-b" th:text="${customer.email}"></td>

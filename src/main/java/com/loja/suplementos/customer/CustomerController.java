@@ -23,6 +23,13 @@ public class CustomerController {
         return "customers/index";
     }
 
+    @GetMapping("/{id}")
+    public String getCustomerDetails(@PathVariable Long id, Model model) {
+        Customer customer = service.findById(id);
+        model.addAttribute("customer", customer);
+        return "customers/details";
+    }
+
     @GetMapping("/new")
     public String newCustomerForm(Model model) {
         model.addAttribute("customer", new Customer());

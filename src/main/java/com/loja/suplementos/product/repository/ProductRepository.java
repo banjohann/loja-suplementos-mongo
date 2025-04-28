@@ -3,12 +3,13 @@ package com.loja.suplementos.product.repository;
 import com.loja.suplementos.product.domain.Product;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ProductRepository {
 
     void save(Product product);
 
-    Product findById(Long id);
+    Optional<Product> findById(Long id);
 
     void update(Product product);
 

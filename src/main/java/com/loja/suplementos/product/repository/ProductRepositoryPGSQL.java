@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @Transactional
@@ -23,8 +24,8 @@ public class ProductRepositoryPGSQL implements ProductRepository {
     }
 
     @Override
-    public Product findById(Long id) {
-        return this.entityManager.find(Product.class, id);
+    public Optional<Product> findById(Long id) {
+        return Optional.ofNullable(this.entityManager.find(Product.class, id));
     }
 
     @Override
