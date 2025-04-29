@@ -32,8 +32,6 @@ public class Product {
 
     private ProductType type;
 
-    private String imageUrl;
-
     private float price;
 
     private int quantityInStock;
@@ -46,10 +44,9 @@ public class Product {
     @JoinColumn(name = "table_id")
     private NutritionalTable nutritionalTable;
 
-    public Product(String name, String description, String imageUrl, float price, int quantity, Brand brand, NutritionalTable nutritionalTable) {
+    public Product(String name, String description, float price, int quantity, Brand brand, NutritionalTable nutritionalTable) {
         this.name = name;
         this.description = description;
-        this.imageUrl = imageUrl;
         this.price = price;
         this.quantityInStock = quantity;
         this.brand = brand;

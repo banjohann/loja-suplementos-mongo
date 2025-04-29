@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Editar Produto</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-6">
+    <div class="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-md">
+        <h1 class="text-2xl font-bold mb-6">Editar Produto</h1>
+        <form th:action="@{/api/products/{id}(id=${product.id})}" method="post" class="space-y-4">
+            <input type="hidden" id="id" name="id" th:value="${product.id}">
+            <div>
+                <label for="name" class="block text-sm font-medium">Nome</label>
+                <input type="text" id="name" name="name" th:value="${product.name}" class="w-full border border-gray-300 rounded-lg" required>
+            </div>
+            <div>
+                <label for="brandId" class="block text-sm font-medium">Marca</label>
+                <select id="brandId" name="brandId" class="w-full border border-gray-300 rounded-lg" required>
+                    <option value="" disabled>Selecione uma marca</option>
+                    <option th:each="brand : ${brands}" th:value="${brand.id}" th:text="${brand.name}" th:selected="${brand.id == product.brand.id}"></option>
+                </select>
+            </div>
+            <div>
+                <label for="nutritionalTableId" class="block text-sm font-medium">Tabela Nutricional</label>
+                <select id="nutritionalTableId" name="nutritionalTableId" class="w-full border border-gray-300 rounded-lg" required>
+                    <option value="" disabled>Selecione uma tabela nutricional</option>
+                    <option th:each="table : ${nutritionalTables}" th:value="${table.id}" th:text="${table.name}" th:selected="${table.id == product.nutritionalTable.id}"></option>
+                </select>
+            </div>
+            <div>
+                <label for="description" class="block text-sm font-medium">Descrição</label>
+                <textarea id="description" name="description" class="w-full border border-gray-300 rounded-lg" rows="4" th:text="${product.description}" required></textarea>
+            </div>
+            <div>
+                <label for="price" class="block text-sm font-medium">Preço</label>
+                <input type="number" id="price" name="price" step="0.01" th:value="${product.price}" class="w-full border border-gray-300 rounded-lg" required>
+            </div>
+            <div>
+                <label for="type" class="block text-sm font-medium">Tipo</label>
+                <select id="type" name="type" class="w-full border-gray-300 rounded-lg" required>
+                    <option value="" disabled>Selecione um tipo</option>
+                    <option th:each="type : ${productTypes}" th:value="${type}" th:text="${type}" th:selected="${type == product.type}"></option>
+                </select>
+            </div>
+            <div>
+                <label for="quantityInStock" class="block text-sm font-medium">Quantidade em Estoque</label>
+                <input type="number" id="quantityInStock" name="quantityInStock" th:value="${product.quantityInStock}" class="w-full border border-gray-300 rounded-lg" required>
+            </div>
+            <div class="flex justify-end">
+                <button type="submit" class="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-400">Salvar</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

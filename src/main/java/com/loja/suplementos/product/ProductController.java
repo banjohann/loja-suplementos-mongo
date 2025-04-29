@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.Arrays;
@@ -15,8 +16,6 @@ import java.util.Arrays;
 public class ProductController {
 
     private final ProductService service;
-
-
 
     @GetMapping()
     public String index(Model model) {
@@ -29,7 +28,17 @@ public class ProductController {
     public String newProductForm(Model model) {
         model.addAttribute("brands", service.getAllBrands());
         model.addAttribute("nutritionalTables", service.getAllNutritionalTables());
-        model.addAttribute("productTypes", Arrays.stream(ProductType.values()).map(ProductType::name).toList());
+        model.addAttribute("productTypes", ProductType.values());
         return "products/new";
+    }
+
+    @GetMapping("/{id}/edit")
+    public String editProductForm(@PathVariable Long id, Model model) {
+        var product = service.findById(id);
+        model.addAttribute("product", product);
+        model.addAttribute("brands", service.getAllBrands());
+        model.addAttribute("nutritionalTables", service.getAllNutritionalTables());
+        model.addAttribute("productTypes", ProductType.values());
+        return "products/edit";
     }
 }

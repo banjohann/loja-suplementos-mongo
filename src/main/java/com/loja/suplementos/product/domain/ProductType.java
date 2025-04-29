@@ -1,8 +1,18 @@
 package com.loja.suplementos.product.domain;
 
 public enum ProductType {
-    WHEY,
-    CREATINE,
-    PRE_WORKOUT,
-    VEGAN_PROTEIN
+    WHEY("Whey Protein"),
+    CREATINE("Creatina"),
+    PRE_WORKOUT("Pré-Treino"),
+    VEGAN_PROTEIN("Proteína Vegana");
+
+    private final String description;
+
+    ProductType(String description) {
+        this.description = description;
+    }
+
+    public String getDescription() {
+        return description;
+    }
 }

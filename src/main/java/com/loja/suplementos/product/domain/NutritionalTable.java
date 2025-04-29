@@ -5,10 +5,18 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
+@Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "nutritional_table")
 public class NutritionalTable {
 
@@ -26,11 +34,5 @@ public class NutritionalTable {
 
     private double proteinPerServing;
 
-    public NutritionalTable(float servingSize, int calories, double fatPerServing, double carbsPerServing, double proteinPerServing) {
-        this.servingSize = servingSize;
-        this.calories = calories;
-        this.fatPerServing = fatPerServing;
-        this.carbsPerServing = carbsPerServing;
-        this.proteinPerServing = proteinPerServing;
-    }
+    private String description;
 }
