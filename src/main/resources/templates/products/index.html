@@ -8,7 +8,7 @@
     </head>
     <body class="bg-gray-100">
         <div th:replace="~{partials/header :: header}"></div>
-        <div class="container mx-auto mt-10">
+        <div class="container mx-auto mt-8 p-8 max-w-3xl bg-white rounded-lg shadow-md">
             <div class="flex justify-between items-center mb-6">
                 <h1 class="text-2xl font-bold">Produtos</h1>
                 <a href="/products/new" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-400">Criar produto</a>
@@ -29,9 +29,9 @@
                     <td class="py-2 px-4 border-b" th:text="${product.name}"></td>
                     <td class="py-2 px-4 border-b" th:text="${product.brand.name}"></td>
                     <td class="py-2 px-4 border-b" th:text="${product.price}"></td>
-                    <td class="py-2 px-4 border-b">
-                        <div class="flex space-x-2">
-                            <a th:href="@{/products/{id}/edit(id=${product.id})}" class="bg-yellow-500 text-black px-4 py-2 rounded hover:bg-yellow-400">Editar</a>
+                    <td class="py-2 border-b">
+                        <div class="flex justify-center">
+                            <a th:href="@{/products/{id}/edit(id=${product.id})}" class="bg-yellow-500 text-black mr-2 px-4 py-2 rounded hover:bg-yellow-400">Editar</a>
                             <button th:data-id="${product.id}" class="delete-btn bg-red-500 text-white px-4 py-2 rounded hover:bg-red-400">Remover</button>
                         </div>
                     </td>
