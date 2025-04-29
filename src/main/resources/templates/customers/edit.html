@@ -71,7 +71,7 @@
         }
 
         function submitEdit(data) {
-            fetch(`/api/customers/${data.id}` + data.id, {
+            fetch(`/api/customers/${data.id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
