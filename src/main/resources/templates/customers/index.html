@@ -44,7 +44,8 @@
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             document.querySelectorAll(".delete-btn").forEach(button => {
-                button.addEventListener("click", function () {
+                button.addEventListener("click", function (event) {
+                    event.stopPropagation();
                     const customerId = this.dataset.id;
                     deleteCustomer(customerId);
                 });
