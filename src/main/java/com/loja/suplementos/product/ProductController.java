@@ -22,6 +22,13 @@ public class ProductController {
         return "products/index";
     }
 
+    @GetMapping("/{id}")
+    public String detail(@PathVariable Long id, Model model) {
+        var product = service.findById(id);
+        model.addAttribute("product", product);
+        return "products/details";
+    }
+
     @GetMapping("/new")
     public String newProductForm(Model model) {
         model.addAttribute("brands", service.getAllBrands());
