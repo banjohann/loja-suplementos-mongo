@@ -1,11 +1,11 @@
 package com.loja.suplementos.product;
 
 import com.loja.suplementos.brand.domain.Brand;
-import com.loja.suplementos.product.domain.NutritionalTable;
+import com.loja.suplementos.nutritionaltable.domain.NutritionalTable;
 import com.loja.suplementos.product.domain.Product;
 import com.loja.suplementos.product.domain.ProductType;
 import com.loja.suplementos.brand.repository.BrandRepository;
-import com.loja.suplementos.product.repository.NutritionalTableRepository;
+import com.loja.suplementos.nutritionaltable.repository.NutritionalTableRepository;
 import com.loja.suplementos.product.repository.ProductRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;

@@ -1,4 +1,4 @@
-package com.loja.suplementos.product.domain;
+package com.loja.suplementos.nutritionaltable.domain;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

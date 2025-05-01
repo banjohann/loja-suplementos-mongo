@@ -1,6 +1,6 @@
-package com.loja.suplementos.product.repository;
+package com.loja.suplementos.nutritionaltable.repository;
 
-import com.loja.suplementos.product.domain.NutritionalTable;
+import com.loja.suplementos.nutritionaltable.domain.NutritionalTable;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
@@ -25,5 +25,20 @@ public class NutritionalTableRepositoryPGSQL implements NutritionalTableReposito
     @Override
     public List<NutritionalTable> findAll() {
         return entityManager.createQuery("SELECT nt FROM NutritionalTable nt", NutritionalTable.class).getResultList();
+    }
+
+    @Override
+    public void save(NutritionalTable nutritionalTable) {
+        entityManager.persist(nutritionalTable);
+    }
+
+    @Override
+    public void update(NutritionalTable nutritionalTable) {
+        entityManager.merge(nutritionalTable);
+    }
+
+    @Override
+    public void delete(NutritionalTable nutritionalTable) {
+        entityManager.remove(nutritionalTable);
     }
 }

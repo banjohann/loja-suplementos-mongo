@@ -1,6 +1,7 @@
 package com.loja.suplementos.product.domain;
 
 import com.loja.suplementos.brand.domain.Brand;
+import com.loja.suplementos.nutritionaltable.domain.NutritionalTable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
