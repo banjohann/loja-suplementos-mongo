@@ -1,5 +1,6 @@
 package com.loja.suplementos.sale.domain;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import com.loja.suplementos.customer.domain.Customer;
@@ -16,8 +17,18 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "sale")
 public class Sale {
     
@@ -43,15 +54,7 @@ public class Sale {
 
     @OneToMany
     @JoinColumn(name = "saleId")
-    private Set<SaleItem> saleItems;
-
-    public Sale(Customer customer, DeliveryAddress deliveryAddress, Payment payment, Shipping shipping, Set<SaleItem> saleItems) {
-        this.customer = customer;
-        this.deliveryAddress = deliveryAddress;
-        this.payment = payment;
-        this.shipping = shipping;
-        this.saleItems = saleItems;
-    }
+    private Set<SaleItem> saleItems = new HashSet<>();
 
     public void addSaleItem(SaleItem saleItem) {
         this.saleItems.add(saleItem);

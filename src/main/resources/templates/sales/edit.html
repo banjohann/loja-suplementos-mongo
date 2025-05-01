@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edit Sale</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 p-6">
+    <h1 class="text-2xl font-bold mb-4">Edit Sale</h1>
+    <div th:replace="~{partials/toast :: toast}"></div>
+    <div class="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md">
+        <form th:action="@{/sales/edit/{id}(id=${sale.id})}" method="post">
+            <div class="mb-4">
+                <label for="customerId" class="block text-gray-700">Customer:</label>
+                <select id="customerId" name="customerId" class="mt-1 p-2 border rounded w-full" required>
+                    <option th:each="customer : ${customers}" th:value="${customer.id}" th:text="${customer.name}" th:selected="${customer.id == sale.customer.id}"></option>
+                </select>
+            </div>
+            <div class="mb-4">
+                <label for="deliveryAddressId" class="block text-gray-700">Delivery Address:</label>
+                <select id="deliveryAddressId" name="deliveryAddressId" class="mt-1 p-2 border rounded w-full" required>
+                    <option th:each="address : ${addresses}" th:value="${address.id}" th:text="${address.fullAddress}" th:selected="${address.id == sale.deliveryAddress.id}"></option>
+                </select>
+            </div>
+            <div class="mt-4">
+                <a href="/sales" class="bg-gray-500 text-white p-2 rounded">Cancel</a>
+                <button type="submit" class="bg-blue-500 text-white p-2 rounded float-right">Save</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

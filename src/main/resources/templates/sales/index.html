@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Vendas</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 p-6">
+    <h1 class="text-2xl font-bold mb-4">Vendas</h1>
+    <div th:replace="~{partials/toast :: toast}"></div>
+    <a href="/sales/new" class="bg-blue-500 text-white p-2 rounded">Cadastrar venda</a>
+    <table class="table-auto w-full mt-4 bg-white shadow-md rounded">
+        <thead>
+            <tr>
+                <th class="px-4 py-2">ID</th>
+                <th class="px-4 py-2">Customer</th>
+                <th class="px-4 py-2">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="sale : ${sales}">
+                <td class="border px-4 py-2" th:text="${sale.id}"></td>
+                <td class="border px-4 py-2" th:text="${sale.customer.name}"></td>
+                <td class="border px-4 py-2">
+                    <a th:href="@{/sales/details/{id}(id=${sale.id})}" class="text-blue-500">Details</a>
+                    <a th:href="@{/sales/edit/{id}(id=${sale.id})}" class="text-yellow-500 ml-2">Edit</a>
+                    <a th:href="@{/sales/delete/{id}(id=${sale.id})}" class="text-red-500 ml-2">Delete</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+    <script th:src="@{/js/toast.js}"></script>
+</html>

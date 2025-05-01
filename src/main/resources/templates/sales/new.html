@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Nova Venda</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-6">
+    <h1 class="text-2xl font-bold mb-4">Nova Venda</h1>
+    <div th:replace="~{partials/toast :: toast}"></div>
+    <div class="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md">
+        <form th:action="@{/sales/new}" method="post">
+            <div class="mb-4">
+                <label for="customerId" class="block text-gray-700">Cliente:</label>
+                <select id="customerId" name="customerId" class="mt-1 p-2 border rounded w-full" required>
+                    <option value="" disabled selected>Selecione um cliente</option>
+                    <option th:each="customer : ${customers}" th:value="${customer.id}" th:text="${customer.name}"
+                            data-addresses='[[${customer.addresses}]]'></option>
+                </select>
+            </div>
+            <div class="mb-4">
+                <label for="deliveryAddressId" class="block text-gray-700">Endereço de entrega:</label>
+                <select id="deliveryAddressId" name="deliveryAddressId" class="mt-1 p-2 border rounded w-full" required>
+                    <option value="" disabled selected>Selecione um endereço</option>
+                </select>
+            </div>
+            <div class="mt-4">
+                <a href="/sales" class="bg-gray-500 text-white p-2 rounded">Cancelar</a>
+                <button type="submit" class="bg-blue-500 text-white p-2 rounded float-right">Salvar</button>
+            </div>
+        </form>
+    </div>
+</body>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const customerSelect = document.getElementById('customerId');
+        const addressSelect = document.getElementById('deliveryAddressId');
+
+        customerSelect.addEventListener('change', function () {
+            const selectedOption = customerSelect.options[customerSelect.selectedIndex];
+            const addresses = JSON.parse(selectedOption.getAttribute('data-addresses'));
+
+            addressSelect.innerHTML = '<option value="" disabled selected>Selecione um endereço</option>';
+
+            addresses.forEach(address => {
+                const option = document.createElement('option');
+                option.value = address.id;
+                option.textContent = address.fullAddress;
+                addressSelect.appendChild(option);
+            });
+        });
+    });
+</script>
+<script th:src="@{/js/toast.js}"></script>
+</html>
