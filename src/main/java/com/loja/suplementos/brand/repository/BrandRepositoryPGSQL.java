@@ -1,6 +1,6 @@
-package com.loja.suplementos.product.repository;
+package com.loja.suplementos.brand.repository;
 
-import com.loja.suplementos.product.domain.Brand;
+import com.loja.suplementos.brand.domain.Brand;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
@@ -26,5 +26,19 @@ public class BrandRepositoryPGSQL implements BrandRepository {
     @Override
     public List<Brand> findAll() {
         return entityManager.createQuery("SELECT b FROM Brand b", Brand.class).getResultList();
+    }
+
+    @Override
+    public void save(Brand brand) {
+        if (brand.getId() == null) {
+            entityManager.persist(brand);
+        } else {
+            entityManager.merge(brand);
+        }
+    }
+
+    @Override
+    public void delete(Brand brand) {
+        entityManager.remove(brand);
     }
 }

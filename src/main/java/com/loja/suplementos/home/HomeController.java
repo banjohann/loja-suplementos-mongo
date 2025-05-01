@@ -16,8 +16,8 @@ public class HomeController {
         return "home";
     }
 
-    @GetMapping("/estoque")
+    @GetMapping("/stock")
     public String estoque(Model model) {
-        return "products/home";
+        return "stock";
     }
 }
