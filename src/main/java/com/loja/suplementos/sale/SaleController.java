@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @AllArgsConstructor
-@RequestMapping("/products")
+@RequestMapping("/sales")
 public class SaleController {
 
     private SaleService service;
