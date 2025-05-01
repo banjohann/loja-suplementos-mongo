@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @Repository
 @Transactional
-@Profile("postgres")
+@Profile("Postgres")
 public class SaleRepositoryPGSQL implements SaleRepository {
 
     @PersistenceContext
