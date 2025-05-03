@@ -16,4 +16,6 @@ public interface ProductRepository {
     void delete(Product product);
 
     List<Product> findAll();
+
+    List<Product> findAllInStock();
 }

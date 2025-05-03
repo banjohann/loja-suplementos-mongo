@@ -15,9 +15,4 @@ public class HomeController {
     public String index(Model model) {
         return "home";
     }
-
-    @GetMapping("/stock")
-    public String estoque(Model model) {
-        return "stock";
-    }
 }

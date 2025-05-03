@@ -5,29 +5,66 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body class="bg-gray-100 p-6">
-    <h1 class="text-2xl font-bold mb-4">Vendas</h1>
     <div th:replace="~{partials/toast :: toast}"></div>
-    <a href="/sales/new" class="bg-blue-500 text-white p-2 rounded">Cadastrar venda</a>
-    <table class="table-auto w-full mt-4 bg-white shadow-md rounded">
-        <thead>
-            <tr>
-                <th class="px-4 py-2">ID</th>
-                <th class="px-4 py-2">Customer</th>
-                <th class="px-4 py-2">Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="sale : ${sales}">
-                <td class="border px-4 py-2" th:text="${sale.id}"></td>
-                <td class="border px-4 py-2" th:text="${sale.customer.name}"></td>
-                <td class="border px-4 py-2">
-                    <a th:href="@{/sales/details/{id}(id=${sale.id})}" class="text-blue-500">Details</a>
-                    <a th:href="@{/sales/edit/{id}(id=${sale.id})}" class="text-yellow-500 ml-2">Edit</a>
-                    <a th:href="@{/sales/delete/{id}(id=${sale.id})}" class="text-red-500 ml-2">Delete</a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="container mx-auto mt-8 p-8 max-w-3xl bg-white rounded-lg shadow-md">
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-2xl font-bold mb-4">Vendas</h1>
+            <a href="/sales/new" class="bg-blue-500 text-white p-2 rounded">Cadastrar venda</a>
+        </div>
+        <table class="table-auto w-full mt-4 bg-white shadow-md rounded">
+            <thead>
+                <tr>
+                    <th class="px-4 py-2">ID</th>
+                    <th class="px-4 py-2">Cliente</th>
+                    <th class="px-4 py-2">Valor</th>
+                    <th class="px-4 py-2">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="sale : ${sales}"
+                    th:onclick="|window.location.href='/sales/' + ${sale.id}|"
+                    class="cursor-pointer hover:bg-gray-100">
+                    <td class="border px-4 py-2" th:text="${sale.id}"></td>
+                    <td class="border px-4 py-2" th:text="${sale.customer.name}"></td>
+                    <td class="border px-4 py-2" th:text="${prices.get(sale.id).toString()}"></td>
+                    <td class="border px-4 py-2">
+                        <div class="flex justify-center">
+                            <a th:href="@{/sales/edit/{id}(id=${sale.id})}" class="bg-yellow-500 text-black mr-2 px-4 py-2 rounded hover:bg-yellow-400">Editar</a>
+                            <button th:data-id="${sale.id}" class="delete-btn bg-red-500 text-white px-4 py-2 rounded hover:bg-red-400 ml-2">Remover</button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </body>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll(".delete-btn").forEach(button => {
+                button.addEventListener("click", function (event) {
+                    event.stopPropagation();
+                    const saleId = this.dataset.id;
+                    if (confirm("Quer mesmo remover essa venda?")) {
+                        deleteSale(saleId);
+                    }
+                });
+            });
+        });
+
+        function deleteSale(saleId) {
+            fetch(`/api/sales/${saleId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then(response => {
+                if (response.ok) {
+                    window.location.reload();
+                } else {
+                    showToast("Erro ao remover a venda");
+                }
+            });
+        }
+    </script>
     <script th:src="@{/js/toast.js}"></script>
 </html>

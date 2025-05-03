@@ -15,6 +15,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 @Entity
 @Getter
 @Setter
@@ -34,7 +36,7 @@ public class Product {
 
     private ProductType type;
 
-    private float price;
+    private BigDecimal price;
 
     private int quantityInStock;
 
@@ -45,13 +47,4 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "table_id")
     private NutritionalTable nutritionalTable;
-
-    public Product(String name, String description, float price, int quantity, Brand brand, NutritionalTable nutritionalTable) {
-        this.name = name;
-        this.description = description;
-        this.price = price;
-        this.quantityInStock = quantity;
-        this.brand = brand;
-        this.nutritionalTable = nutritionalTable;
-    }
 }

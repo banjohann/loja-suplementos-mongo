@@ -1,15 +1,15 @@
 Operações CRUD:
 - Customer [x]
 - DeliveryAddress [x]
-- Payment []
-- Product []
-- - Brand []
-- - NutritionalTable []
+- Product [x]
+- - Brand [x]
+- - NutritionalTable [x]
 - Sale []
+- Payment []
 - SaleItem []
 - Shipping []
 
 -- Relatórios:
-- Clientes com vendas entregues (Venda x Cliente x Entrega)
+- Vendas organizada por cidade (Venda x Cliente x Endereco)
 - Quantidade de vendas com produto (Venda x VendaItem x Produto)
 - Clientes com maior valor de compras (Cliente x Vendas x VendaItem(valor))

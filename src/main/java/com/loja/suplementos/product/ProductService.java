@@ -11,6 +11,7 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -25,6 +26,10 @@ public class ProductService {
 
     public List<Product> findAll() {
         return productRepository.findAll();
+    }
+
+    public List<Product> findAllInStock() {
+        return productRepository.findAllInStock();
     }
 
     public Product findById(Long id) {
@@ -48,7 +53,7 @@ public class ProductService {
             .brand(brand)
             .nutritionalTable(nutritionalTable)
             .description(data.get("description"))
-            .price(Float.parseFloat(data.get("price")))
+            .price(new BigDecimal(data.get("price")))
             .type(ProductType.valueOf(data.get("type")))
             .quantityInStock(Integer.parseInt(data.get("quantityInStock")))
             .build();
@@ -79,7 +84,7 @@ public class ProductService {
         product.setBrand(brand);
         product.setNutritionalTable(nutritionalTable);
         product.setDescription(data.get("description"));
-        product.setPrice(Float.parseFloat(data.get("price")));
+        product.setPrice(new BigDecimal(data.get("price")));
         product.setType(ProductType.valueOf(data.get("type")));
         product.setQuantityInStock(Integer.parseInt(data.get("quantityInStock")));
 

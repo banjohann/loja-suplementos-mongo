@@ -1,5 +1,6 @@
 package com.loja.suplementos.sale;
 
+import com.loja.suplementos.sale.dto.SaleDTO;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -17,15 +18,15 @@ import java.util.Map;
 @Slf4j
 @RestController
 @AllArgsConstructor
-@RequestMapping("/sales")
+@RequestMapping("/api/sales")
 public class SaleRestController {
 
     private SaleService service;
 
     @PostMapping
-    public ResponseEntity<?> createSale(@RequestBody Map<String, String> data) {
+    public ResponseEntity<?> createSale(@RequestBody SaleDTO saleDTO) {
         try {
-            service.save(data);
+            service.save(saleDTO);
         } catch (Exception e) {
             log.error(e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("errorMessage", e.getMessage()));
@@ -35,9 +36,9 @@ public class SaleRestController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateSale(@PathVariable Long id, @RequestBody Map<String, String> data) {
+    public ResponseEntity<?> updateSale(@PathVariable Long id, @RequestBody SaleDTO saleDTO) {
         try {
-            service.update(id, data);
+            service.update(id, saleDTO);
         } catch (Exception e) {
             log.error(e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("errorMessage", e.getMessage()));
