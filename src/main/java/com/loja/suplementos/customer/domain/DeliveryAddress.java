@@ -17,7 +17,7 @@ import lombok.Setter;
 public class DeliveryAddress {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) 
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private Long customerId;
@@ -42,5 +42,9 @@ public class DeliveryAddress {
         this.state = state;
         this.zipCode = zipCode;
         this.customerId = customerId;
+    }
+
+    public String getFullAddress() {
+        return street + ", " + number + ", " + neighborhood + ", " + city + ", " + state + ", " + zipCode;
     }
 }

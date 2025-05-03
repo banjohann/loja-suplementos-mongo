@@ -12,9 +12,7 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -85,7 +83,8 @@ public class SaleService {
                 .build();
         }).collect(Collectors.toSet());
 
-        sale.setSaleItems(saleItems);
+        sale.getSaleItems().clear();
+        sale.getSaleItems().addAll(saleItems);
 
         saleRepository.save(sale);
     }

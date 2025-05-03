@@ -40,9 +40,9 @@ public class Payment {
 
     private Date transactionDate;
 
-    public Payment(PaymentMethod paymentMethod, PaymentStatus status, String transactionId, double amount, Date transactionDate) {
+    public Payment(PaymentMethod paymentMethod, String transactionId, double amount, Date transactionDate) {
         this.paymentMethod = paymentMethod;
-        this.status = status;
+        this.status = PaymentStatus.PENDENTE;
         this.transactionId = transactionId;
         this.amount = amount;
         this.transactionDate = transactionDate;

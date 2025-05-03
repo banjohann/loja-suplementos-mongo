@@ -1,19 +1,51 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Sale Details</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-</head>
-<body class="bg-gray-100 p-6">
-    <h1 class="text-2xl font-bold mb-4">Sale Details</h1>
-    <div th:replace="~{partials/toast :: toast}"></div>
-    <div class="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md">
-        <p><strong>ID:</strong> <span th:text="${sale.id}"></span></p>
-        <p><strong>Customer:</strong> <span th:text="${sale.customer.name}"></span></p>
-        <p><strong>Delivery Address:</strong> <span th:text="${sale.deliveryAddress.fullAddress}"></span></p>
-        <p><strong>Payment:</strong> <span th:text="${sale.payment.status}"></span></p>
-        <p><strong>Shipping:</strong> <span th:text="${sale.shipping.status}"></span></p>
-        <a href="/sales" class="bg-gray-500 text-white p-2 rounded mt-4 inline-block">Back</a>
-    </div>
-</body>
+    <head>
+        <title>Detalhes da Venda</title>
+        <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    </head>
+    <body class="bg-gray-100 p-6">
+        <div class="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-md">
+            <h1 class="text-2xl font-bold mb-4">Detalhes da Venda</h1>
+            <div class="mb-4">
+                <h2 class="text-lg font-semibold">Informações da Venda</h2>
+                <p><strong>ID da Venda:</strong> <span th:text="${sale.id}"></span></p>
+                <p><strong>Cliente:</strong> <span th:text="${sale.customer.name + ' ' + sale.customer.lastName}"></span></p>
+                <p><strong>Endereço de Entrega:</strong> <span th:text="${sale.deliveryAddress.getFullAddress()}"></span></p>
+                <p><strong>Data da Venda:</strong> <span th:text="${sale.getDateCreated()}"></span></p>
+            </div>
+            <div class="mb-4">
+                <h2 class="text-lg font-semibold">Itens da Venda</h2>
+                <table class="min-w-full bg-white border border-gray-300 rounded-lg">
+                    <thead>
+                    <tr class="bg-blue-200 text-left">
+                        <th class="py-2 px-4 border-b">Produto</th>
+                        <th class="py-2 px-4 border-b">Quantidade</th>
+                        <th class="py-2 px-4 border-b">Preço Unitário</th>
+                        <th class="py-2 px-4 border-b">Subtotal</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="item : ${sale.saleItems}" class="hover:bg-gray-100">
+                        <td class="py-2 px-4 border-b" th:text="${item.product.name}"></td>
+                        <td class="py-2 px-4 border-b" th:text="${item.quantity}"></td>
+                        <td class="py-2 px-4 border-b" th:text="${item.price}"></td>
+                        <td class="py-2 px-4 border-b" th:text="${item.price * item.quantity}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="mb-4">
+                <h2 class="text-lg font-semibold">Resumo</h2>
+                <p><strong>Valor Total:</strong> <span th:text="${totalPrice}"></span></p>
+                <p><strong>Status da Entrega:</strong> <span th:text="${sale.shipping.status}"></span></p>
+                <p><strong>Status do Pagamento:</strong> <span th:text="${sale.payment.status}"></span></p>
+            </div>
+            <div class="mt-4">
+                <a th:href="@{/sales}" class="bg-gray-500 text-white px-4 py-2 rounded">Voltar</a>
+                <a th:href="@{/sales/{id}(id=${sale.id})}" class="bg-blue-500 text-white px-4 py-2 rounded">Detalhes da Venda</a>
+                <a th:href="@{/payments/{id}(id=${sale.payment.id})}" class="bg-green-500 text-white px-4 py-2 rounded">Detalhes do Pagamento</a>
+            </div>
+        </div>
+    </body>
 </html>

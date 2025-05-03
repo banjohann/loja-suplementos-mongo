@@ -48,7 +48,12 @@ public class SaleController {
     @GetMapping("/{id}")
     public String detail(@PathVariable Long id, Model model) {
         var product = service.findById(id);
+        var totalPrice = product.getSaleItems().stream()
+                .map(item -> item.getPrice().multiply(new BigDecimal(item.getQuantity())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
         model.addAttribute("sale", product);
+        model.addAttribute("totalPrice", totalPrice);
         return "sales/details";
     }
 
@@ -69,10 +74,21 @@ public class SaleController {
         return "sales/new";
     }
 
-    @GetMapping("/{id}/edit")
-    public String editProductForm(@PathVariable Long id, Model model) {
-        var product = service.findById(id);
-        model.addAttribute("sale", product);
+    @GetMapping("/edit/{id}")
+    public String editProductForm(@PathVariable Long id, Model model) throws JsonProcessingException {
+        var sale = service.findById(id);
+        var customers = customerService.findAll();
+        var customerAddressesMap = customers.stream()
+            .collect(Collectors.toMap(
+                Customer::getId,
+                Customer::getDeliveryAddresses
+            ));
+
+        model.addAttribute("sale", sale);
+        model.addAttribute("customers", customers);
+        model.addAttribute("products", productService.findAllInStock());
+        model.addAttribute("customerAddressesMap", customerAddressesMap);
+
         return "sales/edit";
     }
 }

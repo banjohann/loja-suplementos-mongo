@@ -1,5 +1,6 @@
 package com.loja.suplementos.sale.domain;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -37,11 +38,13 @@ public class Sale {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    private Date dateCreated = new Date();
+
+    @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "delivery_address_id")
     private DeliveryAddress deliveryAddress;
 
@@ -56,12 +59,4 @@ public class Sale {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "saleId")
     private Set<SaleItem> saleItems = new HashSet<>();
-
-    public void addSaleItem(SaleItem saleItem) {
-        this.saleItems.add(saleItem);
-    }
-
-    public void removeSaleItem(SaleItem saleItem) {
-        this.saleItems.removeIf(item -> item.getId().equals(saleItem.getId()));
-    }
 }
