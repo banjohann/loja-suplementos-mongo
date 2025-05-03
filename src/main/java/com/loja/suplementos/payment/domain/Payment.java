@@ -1,5 +1,6 @@
 package com.loja.suplementos.payment.domain;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 
 import jakarta.persistence.Entity;
@@ -32,17 +33,16 @@ public class Payment {
     private PaymentMethod paymentMethod;
 
     @Enumerated(EnumType.STRING)
-    private PaymentStatus status;
+    private PaymentStatus status = PaymentStatus.PENDING;
 
     private String transactionId;
 
-    private double amount;
+    private BigDecimal amount;
 
     private Date transactionDate;
 
-    public Payment(PaymentMethod paymentMethod, String transactionId, double amount, Date transactionDate) {
+    public Payment(PaymentMethod paymentMethod, String transactionId, BigDecimal amount, Date transactionDate) {
         this.paymentMethod = paymentMethod;
-        this.status = PaymentStatus.PENDENTE;
         this.transactionId = transactionId;
         this.amount = amount;
         this.transactionDate = transactionDate;

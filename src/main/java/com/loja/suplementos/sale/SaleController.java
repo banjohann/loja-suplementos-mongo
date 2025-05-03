@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.loja.suplementos.customer.CustomerService;
 import com.loja.suplementos.customer.domain.Customer;
+import com.loja.suplementos.payment.domain.PaymentMethod;
 import com.loja.suplementos.product.ProductService;
 import com.loja.suplementos.product.domain.ProductType;
 import com.loja.suplementos.sale.domain.Sale;
@@ -68,6 +69,7 @@ public class SaleController {
         }
 
         model.addAttribute("customers", customers);
+        model.addAttribute("paymentMethods", PaymentMethod.values());
         model.addAttribute("products", productService.findAllInStock());
         model.addAttribute("customerAddressesMap", customerAddressesMap);
 
@@ -86,6 +88,7 @@ public class SaleController {
 
         model.addAttribute("sale", sale);
         model.addAttribute("customers", customers);
+        model.addAttribute("paymentMethods", PaymentMethod.values());
         model.addAttribute("products", productService.findAllInStock());
         model.addAttribute("customerAddressesMap", customerAddressesMap);
 

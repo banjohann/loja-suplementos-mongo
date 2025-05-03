@@ -12,6 +12,7 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,7 +39,6 @@ public class SaleService {
                 .filter(address -> address.getId().equals(saleDTO.getDeliveryAddressId()))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("Endereço de entrega não encontrado"));
-        var payment = new Payment();
         var shipping = Shipping.ofNewShipping();
 
         var saleItems = saleDTO.getProducts().stream().map(productQuantityDTO -> {
@@ -50,6 +50,15 @@ public class SaleService {
                 .price(product.getPrice().setScale(2))
                 .build();
         }).collect(Collectors.toSet());
+
+        var totalAmount = saleItems.stream()
+            .map(item -> item.getPrice().multiply(new BigDecimal(item.getQuantity())))
+            .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        var payment = Payment.builder()
+            .paymentMethod(saleDTO.getPaymentMethod())
+            .amount(totalAmount)
+            .build();
 
         Sale sale = Sale.builder()
             .customer(customer)
@@ -83,8 +92,16 @@ public class SaleService {
                 .build();
         }).collect(Collectors.toSet());
 
+        var totalAmount = saleItems.stream()
+            .map(item -> item.getPrice().multiply(new BigDecimal(item.getQuantity())))
+            .reduce(BigDecimal.ZERO, BigDecimal::add);
+
         sale.getSaleItems().clear();
         sale.getSaleItems().addAll(saleItems);
+
+        var payment = sale.getPayment();
+        payment.setPaymentMethod(saleDTO.getPaymentMethod());
+        payment.setAmount(totalAmount);
 
         saleRepository.save(sale);
     }
