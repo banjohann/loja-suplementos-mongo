@@ -18,7 +18,7 @@ public class PaymentRepositoryPGSQL implements PaymentRepository {
 
     @Override
     public List<Payment> findAll() {
-        return entityManager.createQuery("SELECT p FROM Payment p", Payment.class).getResultList();
+        return entityManager.createQuery("SELECT p FROM Payment p ORDER BY p.id DESC", Payment.class).getResultList();
     }
 
     @Override

@@ -21,18 +21,24 @@ public class PaymentController {
         return "payments/index";
     }
 
+    @GetMapping("/{id}")
+    public String detail(@PathVariable Long id, Model model) {
+        model.addAttribute("payment", paymentService.findById(id));
+        return "payments/details";
+    }
+
+    @PostMapping()
+    public String savePayment(Payment payment) {
+        paymentService.save(payment);
+        return "redirect:/payments";
+    }
+
     @GetMapping("/new")
     public String newPaymentForm(Model model) {
         model.addAttribute("payment", new Payment());
         model.addAttribute("paymentMethods", PaymentMethod.values());
         model.addAttribute("paymentStatuses", PaymentStatus.values());
         return "payments/new";
-    }
-
-    @PostMapping
-    public String createPayment(Payment payment) {
-        paymentService.save(payment);
-        return "redirect:/payments";
     }
 
     @GetMapping("/edit/{id}")

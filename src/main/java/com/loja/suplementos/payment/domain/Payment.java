@@ -35,15 +35,12 @@ public class Payment {
     @Enumerated(EnumType.STRING)
     private PaymentStatus status = PaymentStatus.PENDING;
 
-    private String transactionId;
-
     private BigDecimal amount;
 
     private Date transactionDate;
 
-    public Payment(PaymentMethod paymentMethod, String transactionId, BigDecimal amount, Date transactionDate) {
+    public Payment(PaymentMethod paymentMethod, BigDecimal amount, Date transactionDate) {
         this.paymentMethod = paymentMethod;
-        this.transactionId = transactionId;
         this.amount = amount;
         this.transactionDate = transactionDate;
     }
