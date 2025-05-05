@@ -1,15 +1,21 @@
-Operações CRUD:
-- Customer [x]
-- DeliveryAddress [x]
-- Product [x]
-- - Brand [x]
-- - NutritionalTable [x]
-- Sale []
-- Payment []
-- SaleItem []
-- Shipping []
+# Loja de Suplementos
 
--- Relatórios:
-- Vendas organizada por cidade (Venda x Cliente x Endereco)
-- Quantidade de vendas com produto (Venda x VendaItem x Produto)
-- Clientes com maior valor de compras (Cliente x Vendas x VendaItem(valor))
+## Pré-requisitos
+- Java 17 ou superior
+- Maven (ou utilize o Maven Wrapper incluído no projeto)
+
+## Build e Execução
+
+### Usando o Maven Wrapper
+1. **Build do projeto e download das dependências**:
+   ```bash
+   ./mvnw clean install
+    ```
+
+2. **Executar a aplicação**:
+    ```bash
+    java -jar target/loja-suplentes-0.0.1-SNAPSHOT.jar
+    ```
+
+3. **Acessar a aplicação**:
+   - Acesse `http://localhost:8080` no seu navegador.
