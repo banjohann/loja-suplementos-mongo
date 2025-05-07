@@ -42,4 +42,11 @@ public class DeliveryAddressRepositoryPGSQL implements DeliveryAddressRepository
     public List<DeliveryAddress> findAll() {
         return this.entityManager.createQuery("SELECT d FROM DeliveryAddress d", DeliveryAddress.class).getResultList();
     }
+
+    @Override
+    public List<DeliveryAddress> findAllFromCustomer(Long customerId) {
+        return this.entityManager.createQuery("SELECT d FROM DeliveryAddress d WHERE d.customerId = :customerId", DeliveryAddress.class)
+                .setParameter("customerId", customerId)
+                .getResultList();
+    }
 }

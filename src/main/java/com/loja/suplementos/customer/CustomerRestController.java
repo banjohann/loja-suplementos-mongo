@@ -2,6 +2,7 @@ package com.loja.suplementos.customer;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.sql.SQLException;
 import java.util.Map;
 
 @Slf4j
@@ -40,9 +42,10 @@ public class CustomerRestController {
     public ResponseEntity<?> deleteCustomer(@PathVariable Long id) {
         try {
             this.service.delete(id);
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("errorMessage", e.getMessage()));
+        } catch (Throwable e) {
+            var errorMessage = "Não é possível excluir o cliente, pois ele está vinculado a um pedido";
+
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("errorMessage", errorMessage));
         }
 
         return ResponseEntity.ok().build();

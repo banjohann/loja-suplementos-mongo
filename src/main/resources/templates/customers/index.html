@@ -62,7 +62,9 @@
                 if (response.ok) {
                     window.location.href = '/customers';
                 } else {
-                   showToast(response.errorMessage || 'Erro ao remover cliente');
+                    response.json().then(error => {
+                        showToast(error.errorMessage || 'Erro ao salvar a marca.');
+                    });
                 }
             });
         }

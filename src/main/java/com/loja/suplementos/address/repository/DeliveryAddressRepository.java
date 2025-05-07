@@ -16,4 +16,6 @@ public interface DeliveryAddressRepository {
     Optional<DeliveryAddress> findById(Long id);
 
     List<DeliveryAddress> findAll();
+
+    List<DeliveryAddress> findAllFromCustomer(Long customerId);
 }

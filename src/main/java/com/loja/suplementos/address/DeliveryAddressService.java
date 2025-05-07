@@ -23,6 +23,10 @@ public class DeliveryAddressService {
         return deliveryAddressRepository.findAll();
     }
 
+    public List<DeliveryAddress> findByCustomer(Long customerId) {
+        return deliveryAddressRepository.findAllFromCustomer(customerId);
+    }
+
     public DeliveryAddress findById(Long id) {
         return deliveryAddressRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Endereço de entrega não encontrado com o ID: " + id));
@@ -41,16 +45,12 @@ public class DeliveryAddressService {
             customer.getId()
         );
 
-        customer.addDeliveryAddress(deliveryAddress);
-
-        customerRepository.save(customer);
         deliveryAddressRepository.save(deliveryAddress);
     }
 
     public void update(Long id, Map<String, String> params) {
         var customer = customerService.findById(Long.parseLong(params.get("customerId")));
         var deliveryAddress = findById(id);
-        var oldCustomer = customerService.findById(deliveryAddress.getCustomerId());
 
         deliveryAddress.setStreet(params.get("street"));
         deliveryAddress.setNumber(params.get("number"));
@@ -60,26 +60,15 @@ public class DeliveryAddressService {
         deliveryAddress.setZipCode(params.get("zipCode"));
         deliveryAddress.setCustomerId(customer.getId());
 
-        if (oldCustomer.getId() != customer.getId()) {
-            oldCustomer
-                .getDeliveryAddresses()
-                .removeIf(address -> id.equals(deliveryAddress.getId()));
-            customer.addDeliveryAddress(deliveryAddress);
-            customerRepository.save(customer);
-        }
-
         deliveryAddressRepository.save(deliveryAddress);
     }
 
     public void delete(Long addressId) {
         var deliveryAddress = findById(addressId);
-        var customer = customerRepository.findById(deliveryAddress.getCustomerId());
-
-        if (customer.isPresent()) {
-            customer.get().getDeliveryAddresses().remove(deliveryAddress);
-            customerRepository.save(customer.get());
+        try {
+            deliveryAddressRepository.delete(deliveryAddress);
+        } catch (Exception e) {
+            throw new RuntimeException("Não pode excluir o endereço de entrega, pois ele está associado a uma entrega. Apague a entrega primeiro.");
         }
-
-        deliveryAddressRepository.delete(deliveryAddress);
     }
 }

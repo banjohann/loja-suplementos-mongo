@@ -1,5 +1,6 @@
 package com.loja.suplementos.customer;
 
+import com.loja.suplementos.address.DeliveryAddressService;
 import com.loja.suplementos.customer.domain.Customer;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -15,6 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class CustomerController {
 
     private final CustomerService service;
+    private final DeliveryAddressService deliveryAddressService;
 
     @GetMapping()
     public String index(Model model) {
@@ -26,7 +28,9 @@ public class CustomerController {
     @GetMapping("/{id}")
     public String getCustomerDetails(@PathVariable Long id, Model model) {
         Customer customer = service.findById(id);
+        var addresses = deliveryAddressService.findByCustomer(id);
         model.addAttribute("customer", customer);
+        model.addAttribute("addresses", addresses);
         return "customers/details";
     }
 
@@ -42,20 +46,5 @@ public class CustomerController {
         model.addAttribute("customer", customer);
 
         return "customers/edit";
-    }
-
-    @GetMapping("/{id}/addresses")
-    public String customerAddresses(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
-        Customer customer = service.findById(id);
-
-        if (customer == null) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Cliente não encontrado");
-            return "redirect:/customers";
-        }
-
-        model.addAttribute("customer", customer);
-        model.addAttribute("deliveryAddresses", customer.getDeliveryAddresses());
-
-        return "index";
     }
 }

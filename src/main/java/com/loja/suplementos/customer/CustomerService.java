@@ -16,11 +16,9 @@ import java.util.Map;
 public class CustomerService {
 
     private final CustomerRepository customerRepository;
-    private final DeliveryAddressRepository deliveryAddressRepository;
 
-    public CustomerService(CustomerRepository customerRepository, DeliveryAddressRepository deliveryAddressRepository) {
+    public CustomerService(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
-        this.deliveryAddressRepository = deliveryAddressRepository;
     }
 
     public void save(Map<String, String> params) {
