@@ -74,7 +74,8 @@ public class SaleRepositoryPGSQL implements SaleRepository {
             "FROM SaleItem si " +
             "JOIN si.product p " +
             "GROUP BY p.id, p.name " +
-            "ORDER BY salesCount DESC, totalSalesValue DESC";
+            "ORDER BY salesCount DESC, totalSalesValue DESC " +
+            "LIMIT 20 ";
 
         List<Object[]> results = entityManager.createQuery(jpql, Object[].class).getResultList();
 
