@@ -30,7 +30,8 @@ public class SaleRepositoryPGSQL implements SaleRepository {
     public List<Map<String, Object>> getCitiesWithMostSales() {
         String jpql = "SELECT da.city, COUNT(s.id) AS salesCount, SUM(si.price * si.quantity) AS totalSalesValue " +
             "FROM Sale s " +
-            "JOIN s.deliveryAddress da " +
+            "JOIN s.shipping sh " +
+            "JOIN sh.deliveryAddress da " +
             "JOIN s.saleItems si " +
             "GROUP BY da.city " +
             "ORDER BY salesCount DESC, totalSalesValue DESC";

@@ -2,6 +2,9 @@ package com.loja.suplementos.customer.repository;
 
 import com.loja.suplementos.customer.domain.DeliveryAddress;
 
+import java.util.List;
+import java.util.Optional;
+
 public interface DeliveryAddressRepository {
 
     void save(DeliveryAddress deliveryAddress);
@@ -10,5 +13,7 @@ public interface DeliveryAddressRepository {
 
     void delete(DeliveryAddress deliveryAddress);
 
-    DeliveryAddress findById(Long id);
+    Optional<DeliveryAddress> findById(Long id);
+
+    List<DeliveryAddress> findAll();
 }

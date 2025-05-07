@@ -15,6 +15,10 @@ public class ShippingService {
 
     private final ShippingRepository shippingRepository;
 
+    public List<Shipping> findAllWithoutSale() {
+        return shippingRepository.findAllWithoutSale();
+    }
+
     public List<Shipping> findAll() {
         return shippingRepository.findAll();
     }
@@ -27,13 +31,8 @@ public class ShippingService {
         shippingRepository.save(shipping);
     }
 
-    public void update(Long id, Shipping shipping) {
-        Shipping existingShipping = findById(id);
-        existingShipping.setStatus(shipping.getStatus());
-        existingShipping.setStatusDescription(shipping.getStatusDescription());
-        existingShipping.setTrackingNumber(shipping.getTrackingNumber());
-
-        shippingRepository.save(existingShipping);
+    public void update(Shipping shipping) {
+        shippingRepository.update(shipping);
     }
 
     public void delete(Long id) {

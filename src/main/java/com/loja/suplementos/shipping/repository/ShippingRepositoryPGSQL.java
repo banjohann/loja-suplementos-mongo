@@ -42,4 +42,10 @@ public class ShippingRepositoryPGSQL implements ShippingRepository {
         return entityManager.createQuery("SELECT s FROM Shipping s", Shipping.class)
                 .getResultList();
     }
+
+    @Override
+    public List<Shipping> findAllWithoutSale() {
+        return entityManager.createQuery("SELECT s FROM Shipping s LEFT JOIN Sale sa ON sa.shipping = s WHERE sa.id IS NULL", Shipping.class)
+                .getResultList();
+    }
 }

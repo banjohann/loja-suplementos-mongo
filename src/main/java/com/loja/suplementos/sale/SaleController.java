@@ -4,10 +4,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.loja.suplementos.customer.CustomerService;
 import com.loja.suplementos.customer.domain.Customer;
+import com.loja.suplementos.payment.PaymentService;
 import com.loja.suplementos.payment.domain.PaymentMethod;
 import com.loja.suplementos.product.ProductService;
 import com.loja.suplementos.product.domain.ProductType;
 import com.loja.suplementos.sale.domain.Sale;
+import com.loja.suplementos.shipping.ShippingService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,6 +30,8 @@ public class SaleController {
     private SaleService service;
     private ProductService productService;
     private CustomerService customerService;
+    private ShippingService shippingService;
+    private PaymentService paymentService;
 
     @GetMapping()
     public String index(Model model) {
@@ -59,38 +63,31 @@ public class SaleController {
     }
 
     @GetMapping("/new")
-    public String newProductForm(Model model) throws JsonProcessingException {
+    public String newProductForm(Model model) {
         var customers = customerService.findAll();
-        var customerAddressesMap = new HashMap<Long, String>();
-        for (Customer customer : customers) {
-            customerAddressesMap.put(
-                customer.getId(),
-                new ObjectMapper().writeValueAsString(customer.getDeliveryAddresses()));
-        }
+        var shippings = shippingService.findAllWithoutSale();
+        var payments = paymentService.findAllWithouSale();
 
         model.addAttribute("customers", customers);
-        model.addAttribute("paymentMethods", PaymentMethod.values());
+        model.addAttribute("shippings", shippings);
+        model.addAttribute("payments", payments);
         model.addAttribute("products", productService.findAllInStock());
-        model.addAttribute("customerAddressesMap", customerAddressesMap);
 
         return "sales/new";
     }
 
     @GetMapping("/edit/{id}")
-    public String editProductForm(@PathVariable Long id, Model model) throws JsonProcessingException {
+    public String editProductForm(@PathVariable Long id, Model model) {
         var sale = service.findById(id);
         var customers = customerService.findAll();
-        var customerAddressesMap = customers.stream()
-            .collect(Collectors.toMap(
-                Customer::getId,
-                Customer::getDeliveryAddresses
-            ));
+        var shippings = shippingService.findAllWithoutSale();
+        var payments = paymentService.findAllWithouSale();
 
         model.addAttribute("sale", sale);
         model.addAttribute("customers", customers);
-        model.addAttribute("paymentMethods", PaymentMethod.values());
         model.addAttribute("products", productService.findAllInStock());
-        model.addAttribute("customerAddressesMap", customerAddressesMap);
+        model.addAttribute("payments", payments);
+        model.addAttribute("shippings", shippings);
 
         return "sales/edit";
     }

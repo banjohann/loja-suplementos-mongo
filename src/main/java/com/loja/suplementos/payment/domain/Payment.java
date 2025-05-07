@@ -3,12 +3,15 @@ package com.loja.suplementos.payment.domain;
 import java.math.BigDecimal;
 import java.sql.Date;
 
+import com.loja.suplementos.sale.domain.Sale;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -38,6 +41,10 @@ public class Payment {
     private BigDecimal amount;
 
     private Date transactionDate;
+
+    public String getDescription() {
+        return String.format("%d, %s, %s", id, paymentMethod.getDescription(), status.getDescription());
+    }
 
     public Payment(PaymentMethod paymentMethod, BigDecimal amount, Date transactionDate) {
         this.paymentMethod = paymentMethod;

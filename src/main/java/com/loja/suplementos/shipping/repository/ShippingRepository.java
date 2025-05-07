@@ -16,4 +16,6 @@ public interface ShippingRepository {
     Optional<Shipping> findById(Long id);
 
     List<Shipping> findAll();
+
+    List<Shipping> findAllWithoutSale();
 }

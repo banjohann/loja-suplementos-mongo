@@ -19,21 +19,17 @@
                 </select>
             </div>
             <div class="mb-4">
-                <label for="deliveryAddressId" class="block text-gray-700">Delivery Address:</label>
-                <select id="deliveryAddressId" name="deliveryAddressId" class="mt-1 p-2 border rounded w-full" required>
-                    <option value="" disabled>Selecione um endereço</option>
-                    <option th:each="address : ${customerAddressesMap[sale.customer.id]}"
-                            th:value="${address.id}"
-                            th:text="${address.street + ', ' + address.number + ', ' + address.city + ', ' + address.state}"
-                            th:selected="${address.id == sale.deliveryAddress.id}">
-                    </option>
+                <label for="shipping" class="block text-gray-700">Método de Entrega:</label>
+                <select id="shipping" name="shipping" class="mt-1 p-2 border rounded w-full" required>
+                    <option value="" disabled selected>Selecione um código de entrega</option>
+                    <option th:each="shipping : ${shippings}" th:value="${shipping.id}" th:text="${shipping.getTrackingNumber()}" th:selected="${shipping.getId() == sale.shipping.id}"></option>
                 </select>
             </div>
             <div class="mb-4">
-                <label for="paymentMethod" class="block text-gray-700">Forma de Pagamento:</label>
-                <select id="paymentMethod" name="paymentMethod" class="mt-1 p-2 border rounded w-full" required>
-                    <option value="" disabled>Selecione uma forma de pagamento</option>
-                    <option th:each="method : ${paymentMethods}" th:value="${method}" th:text="${method.description}" th:selected="${method == sale.payment.paymentMethod}"></option>
+                <label for="payment" class="block text-gray-700">Pagamento:</label>
+                <select id="payment" name="payment" class="mt-1 p-2 border rounded w-full" required>
+                    <option value="" disabled selected>Selecione uma forma de pagamento</option>
+                    <option th:each="payment : ${payments}" th:value="${payment.getId()}" th:text="${payment.getDescription()}" th:selected="${payment.getId() == sale.payment.id}"></option>
                 </select>
             </div>
             <div class="mb-4">
@@ -60,38 +56,23 @@
 <script th:inline="javascript">
     /*<![CDATA[*/
     const products = /*[[${products}]]*/ [];
-    const customerAddressesMap = /*[[${customerAddressesMap}]]*/ {};
     const saleId = /*[[${sale.id}]]*/null;
     /*]]>*/
 
     document.addEventListener('DOMContentLoaded', function () {
         const customerSelect = document.getElementById('customerId');
-        const paymentSelect = document.getElementById('paymentMethod');
-        const addressSelect = document.getElementById('deliveryAddressId');
+        const paymentSelect = document.getElementById('payment');
+        const shippingSelect = document.getElementById('shipping')
         const productList = document.getElementById('product-list');
         const addProductButton = document.getElementById('add-product');
         const saleForm = document.getElementById('sale-form');
-
-        customerSelect.addEventListener('change', function () {
-            const selectedOption = customerSelect.options[customerSelect.selectedIndex];
-            const addresses = customerAddressesMap[selectedOption.value] || [];
-
-            addressSelect.innerHTML = '<option value="" disabled selected>Selecione um endereço</option>';
-
-            addresses.forEach(address => {
-                const option = document.createElement('option');
-                option.value = address.id;
-                option.textContent = address.street + ', ' + address.number + ', ' + address.city + ', ' + address.state;
-                addressSelect.appendChild(option);
-            });
-        });
 
         saleForm.addEventListener('submit', function (event) {
             event.preventDefault();
 
             const customerId = customerSelect.value;
-            const deliveryAddressId = addressSelect.value;
-            const paymentMethod = paymentSelect.value;
+            const paymentId = paymentSelect.value;
+            const shippingId = shippingSelect.value;
             const productRows = productList.querySelectorAll('div');
             const products = [];
 
@@ -103,9 +84,9 @@
 
             const saleData = {
                 customerId,
-                deliveryAddressId,
                 products,
-                paymentMethod
+                paymentId,
+                shippingId
             };
 
             fetch(`/api/sales/${saleId}`, {

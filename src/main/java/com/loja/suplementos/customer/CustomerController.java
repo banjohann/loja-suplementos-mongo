@@ -33,7 +33,7 @@ public class CustomerController {
     @GetMapping("/new")
     public String newCustomerForm(Model model) {
         model.addAttribute("customer", new Customer());
-        return "customers/new";
+        return "customers/create";
     }
 
     @GetMapping("/{id}/edit")
@@ -56,6 +56,6 @@ public class CustomerController {
         model.addAttribute("customer", customer);
         model.addAttribute("deliveryAddresses", customer.getDeliveryAddresses());
 
-        return "customers/addresses";
+        return "addresses/addresses";
     }
 }

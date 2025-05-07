@@ -15,6 +15,10 @@ public class PaymentService {
 
     private final PaymentRepository paymentRepository;
 
+    public List<Payment> findAllWithouSale() {
+        return paymentRepository.findAllWithoutSale();
+    }
+
     public List<Payment> findAll() {
         return paymentRepository.findAll();
     }

@@ -1,6 +1,5 @@
 package com.loja.suplementos.sale.dto;
 
-import com.loja.suplementos.payment.domain.PaymentMethod;
 import lombok.Data;
 
 import java.util.List;
@@ -8,8 +7,8 @@ import java.util.List;
 @Data
 public class SaleDTO {
     private Long customerId;
-    private Long deliveryAddressId;
-    private PaymentMethod paymentMethod;
+    private Long shippingId;
+    private Long paymentId;
     private List<ProductQuantityDTO> products;
 
     @Data

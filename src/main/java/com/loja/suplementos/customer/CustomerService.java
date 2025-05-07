@@ -104,8 +104,7 @@ public class CustomerService {
     }
 
     public void deleteDeliveryAddress(Long addressId) {
-        var deliveryAddress = deliveryAddressRepository.findById(addressId);
-        if (deliveryAddress == null) throw new IllegalArgumentException("Endereço não encontrado");
+        var deliveryAddress = deliveryAddressRepository.findById(addressId).orElseThrow(() -> new IllegalArgumentException("Endereço não encontrado"));
 
         deliveryAddressRepository.delete(deliveryAddress);
     }
@@ -115,8 +114,7 @@ public class CustomerService {
             .findById(customerId)
             .orElseThrow(() -> new IllegalArgumentException("Cliente não encontrado"));
 
-        var deliveryAddress = deliveryAddressRepository.findById(Long.valueOf(data.get("addressId")));
-        if (deliveryAddress == null) throw new IllegalArgumentException("Endereço não encontrado");
+        var deliveryAddress = deliveryAddressRepository.findById(Long.valueOf(data.get("addressId"))).orElseThrow(() -> new IllegalArgumentException("Endereço não encontrado"));
 
         deliveryAddress.setStreet(data.get("street"));
         deliveryAddress.setNumber(data.get("number"));

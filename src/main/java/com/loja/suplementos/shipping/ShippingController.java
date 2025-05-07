@@ -1,13 +1,11 @@
 package com.loja.suplementos.shipping;
 
-import com.loja.suplementos.shipping.domain.Shipping;
+import com.loja.suplementos.customer.repository.DeliveryAddressRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -16,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class ShippingController {
 
      private final ShippingService shippingService;
+     private final DeliveryAddressRepository deliveryAddressRepository;
 
      @GetMapping
      public String index(Model model) {
@@ -29,33 +28,16 @@ public class ShippingController {
          return "shipping/details";
      }
 
-     @PostMapping()
-     public String saveShipping(Shipping shipping) {
-         shippingService.save(shipping);
-         return "redirect:/shipping";
-     }
-
      @GetMapping("/new")
      public String newShippingForm(Model model) {
-         model.addAttribute("shipping", new Shipping());
+         model.addAttribute("deliveryAddresses", deliveryAddressRepository.findAll());
          return "shipping/new";
      }
 
      @GetMapping("/edit/{id}")
      public String editShippingForm(@PathVariable Long id, Model model) {
          model.addAttribute("shipping", shippingService.findById(id));
+         model.addAttribute("deliveryAddresses", deliveryAddressRepository.findAll());
          return "shipping/edit";
-     }
-
-     @PostMapping("/edit/{id}")
-     public String updateShipping(@PathVariable Long id, Shipping shipping) {
-         shippingService.update(id, shipping);
-         return "redirect:/shipping";
-     }
-
-     @PostMapping("/delete/{id}")
-     public ResponseEntity<?> deleteShipping(@PathVariable Long id) {
-         shippingService.delete(id);
-         return ResponseEntity.ok().build();
      }
 }

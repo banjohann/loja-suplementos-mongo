@@ -15,22 +15,22 @@
                 <label for="customerId" class="block text-gray-700">Cliente:</label>
                 <select id="customerId" name="customerId" class="mt-1 p-2 border rounded w-full" required>
                     <option value="" disabled selected>Selecione um cliente</option>
-                    <option th:each="customer : ${customers}" th:value="${customer.id}" th:text="${customer.name}"
-                            th:attr="data-addresses=${customerAddressesMap.get(customer.id)}">
+                    <option th:each="customer : ${customers}" th:value="${customer.id}" th:text="${customer.name}">
                     </option>
                 </select>
             </div>
             <div class="mb-4">
-                <label for="deliveryAddressId" class="block text-gray-700">Endereço de entrega:</label>
-                <select id="deliveryAddressId" name="deliveryAddressId" class="mt-1 p-2 border rounded w-full" required>
-                    <option value="" disabled selected>Selecione um endereço</option>
+                <label for="shipping" class="block text-gray-700">Entrega:</label>
+                <select id="shipping" name="shipping" class="mt-1 p-2 border rounded w-full" required>
+                    <option value="" disabled selected>Selecione um código de entrega</option>
+                    <option th:each="shipping : ${shippings}" th:value="${shipping.id}" th:text="${shipping.getTrackingNumber()}"></option>
                 </select>
             </div>
             <div class="mb-4">
-                <label for="paymentMethod" class="block text-gray-700">Forma de Pagamento:</label>
-                <select id="paymentMethod" name="paymentMethod" class="mt-1 p-2 border rounded w-full" required>
+                <label for="payment" class="block text-gray-700">Pagamento:</label>
+                <select id="payment" name="payment" class="mt-1 p-2 border rounded w-full" required>
                     <option value="" disabled selected>Selecione uma forma de pagamento</option>
-                    <option th:each="method : ${paymentMethods}" th:value="${method}" th:text="${method.description}"></option>
+                    <option th:each="payment : ${payments}" th:value="${payment.getId()}" th:text="${payment.getDescription()}"></option>
                 </select>
             </div>
             <div class="mb-4">
@@ -57,31 +57,15 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const customerSelect = document.getElementById('customerId');
-        const addressSelect = document.getElementById('deliveryAddressId');
-        const paymentSelect = document.getElementById('paymentMethod');
+        const paymentSelect = document.getElementById('payment');
+        const shippingSelect = document.getElementById('shipping');
         const productList = document.getElementById('product-list');
         const saleForm = document.getElementById('sale-form')
-
-        customerSelect.addEventListener('change', function () {
-            const selectedOption = customerSelect.options[customerSelect.selectedIndex];
-            const addresses = JSON.parse(selectedOption.getAttribute('data-addresses'));
-
-            addressSelect.innerHTML = '<option value="" disabled selected>Selecione um endereço</option>';
-
-            addresses.forEach(address => {
-                const option = document.createElement('option');
-                option.value = address.id;
-                option.textContent = address.street + ', ' + address.number + ', ' + address.city + ', ' + address.state;
-                addressSelect.appendChild(option);
-            });
-        });
 
         saleForm.addEventListener('submit', function (event) {
             event.preventDefault();
 
             const customerId = customerSelect.value;
-            const paymentMethod = paymentSelect.value;
-            const deliveryAddressId = addressSelect.value;
             const productRows = productList.querySelectorAll('div');
             const products = [];
 
@@ -92,10 +76,10 @@
             });
 
             const saleData = {
-                customerId,
-                deliveryAddressId,
-                products,
-                paymentMethod
+                customerId: customerId,
+                products: products,
+                paymentId: paymentSelect.value,
+                shippingId: shippingSelect.value
             };
 
             fetch('/api/sales', {
@@ -144,7 +128,6 @@
             productList.appendChild(productRow);
 
             productRow.querySelector('.remove-product').addEventListener('click', function () {
-                console.log("chamou")
                 productRow.remove();
             });
         });

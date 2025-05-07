@@ -1,12 +1,14 @@
 package com.loja.suplementos.sale;
 
 import com.loja.suplementos.customer.CustomerService;
+import com.loja.suplementos.payment.PaymentService;
 import com.loja.suplementos.payment.domain.Payment;
 import com.loja.suplementos.product.ProductService;
 import com.loja.suplementos.sale.domain.Sale;
 import com.loja.suplementos.sale.domain.SaleItem;
 import com.loja.suplementos.sale.dto.SaleDTO;
 import com.loja.suplementos.sale.repository.SaleRepository;
+import com.loja.suplementos.shipping.ShippingService;
 import com.loja.suplementos.shipping.domain.Shipping;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -22,8 +24,10 @@ import java.util.stream.Collectors;
 public class SaleService {
 
     private final SaleRepository saleRepository;
+    private final ShippingService shippingService;
     private final CustomerService customerService;
     private final ProductService productService;
+    private final PaymentService paymentService;
 
     public List<Sale> findAll() {
         return saleRepository.findAll();
@@ -35,11 +39,8 @@ public class SaleService {
 
     public void save(SaleDTO saleDTO) {
         var customer = customerService.findById(saleDTO.getCustomerId());
-        var deliveryAddress = customer.getDeliveryAddresses().stream()
-                .filter(address -> address.getId().equals(saleDTO.getDeliveryAddressId()))
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Endereço de entrega não encontrado"));
-        var shipping = Shipping.ofNewShipping();
+        var shipping = shippingService.findById(saleDTO.getShippingId());
+        var payment = paymentService.findById(saleDTO.getPaymentId());
 
         var saleItems = saleDTO.getProducts().stream().map(productQuantityDTO -> {
             var product = productService.findById(productQuantityDTO.getProductId());
@@ -55,14 +56,11 @@ public class SaleService {
             .map(item -> item.getPrice().multiply(new BigDecimal(item.getQuantity())))
             .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        var payment = Payment.builder()
-            .paymentMethod(saleDTO.getPaymentMethod())
-            .amount(totalAmount)
-            .build();
+        payment.setAmount(totalAmount);
+        paymentService.save(payment);
 
         Sale sale = Sale.builder()
             .customer(customer)
-            .deliveryAddress(deliveryAddress)
             .payment(payment)
             .shipping(shipping)
             .saleItems(saleItems)
@@ -74,13 +72,12 @@ public class SaleService {
     public void update(long id, SaleDTO saleDTO) {
         var sale = findById(id);
         var customer = customerService.findById(saleDTO.getCustomerId());
-        var deliveryAddress = customer.getDeliveryAddresses().stream()
-                .filter(address -> address.getId().equals(saleDTO.getDeliveryAddressId()))
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Endereço de entrega não encontrado"));
+        var shipping = shippingService.findById(saleDTO.getShippingId());
+        var payment = paymentService.findById(saleDTO.getPaymentId());
 
         sale.setCustomer(customer);
-        sale.setDeliveryAddress(deliveryAddress);
+        sale.setShipping(shipping);
+        sale.setPayment(payment);
 
         var saleItems = saleDTO.getProducts().stream().map(productQuantityDTO -> {
             var product = productService.findById(productQuantityDTO.getProductId());
@@ -96,12 +93,11 @@ public class SaleService {
             .map(item -> item.getPrice().multiply(new BigDecimal(item.getQuantity())))
             .reduce(BigDecimal.ZERO, BigDecimal::add);
 
+        payment.setAmount(totalAmount);
+        paymentService.save(payment);
+
         sale.getSaleItems().clear();
         sale.getSaleItems().addAll(saleItems);
-
-        var payment = sale.getPayment();
-        payment.setPaymentMethod(saleDTO.getPaymentMethod());
-        payment.setAmount(totalAmount);
 
         saleRepository.save(sale);
     }

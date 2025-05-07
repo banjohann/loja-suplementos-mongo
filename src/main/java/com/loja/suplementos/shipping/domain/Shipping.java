@@ -1,11 +1,17 @@
 package com.loja.suplementos.shipping.domain;
 
+import com.loja.suplementos.customer.domain.DeliveryAddress;
+import com.loja.suplementos.sale.domain.Sale;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -35,11 +41,15 @@ public class Shipping {
 
     private String statusDescription;
 
-    public static Shipping ofNewShipping() {
+    @ManyToOne
+    @JoinColumn(name = "delivery_address_id")
+    private DeliveryAddress deliveryAddress;
+
+    public static Shipping ofNewShipping(DeliveryAddress deliveryAddress) {
         var trackingNumber = UUID.randomUUID().toString();
         var status = ShippingStatus.NOT_SHIPPED;
         var statusDescription = "Pedido registrado";
 
-        return Shipping.builder().trackingNumber(trackingNumber).status(status).statusDescription(statusDescription).build();
+        return Shipping.builder().deliveryAddress(deliveryAddress).trackingNumber(trackingNumber).status(status).statusDescription(statusDescription).build();
     }
 }

@@ -33,12 +33,12 @@ public class PaymentRepositoryPGSQL implements PaymentRepository {
     }
 
     @Override
-    public void update(Payment payment) {
-        entityManager.persist(payment);
+    public void delete(Payment payment) {
+        entityManager.remove(payment);
     }
 
     @Override
-    public void delete(Payment payment) {
-        entityManager.remove(payment);
+    public List<Payment> findAllWithoutSale() {
+        return entityManager.createQuery("SELECT p FROM Payment p LEFT JOIN Sale s ON s.payment = p WHERE s.id IS NULL", Payment.class).getResultList();
     }
 }

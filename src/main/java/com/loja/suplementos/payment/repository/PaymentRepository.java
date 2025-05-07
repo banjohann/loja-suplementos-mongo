@@ -15,5 +15,5 @@ public interface PaymentRepository {
 
     List<Payment> findAll();
 
-    void update(Payment payment);
+    List<Payment> findAllWithoutSale();
 }
