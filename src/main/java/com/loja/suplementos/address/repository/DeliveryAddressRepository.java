@@ -1,6 +1,6 @@
-package com.loja.suplementos.customer.repository;
+package com.loja.suplementos.address.repository;
 
-import com.loja.suplementos.customer.domain.DeliveryAddress;
+import com.loja.suplementos.address.DeliveryAddress;
 
 import java.util.List;
 import java.util.Optional;

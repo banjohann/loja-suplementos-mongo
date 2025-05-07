@@ -1,7 +1,6 @@
 package com.loja.suplementos.shipping.domain;
 
-import com.loja.suplementos.customer.domain.DeliveryAddress;
-import com.loja.suplementos.sale.domain.Sale;
+import com.loja.suplementos.address.DeliveryAddress;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -11,7 +10,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -41,8 +39,8 @@ public class Shipping {
 
     private String statusDescription;
 
-    @ManyToOne
-    @JoinColumn(name = "delivery_address_id")
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "delivery_address_id", nullable = true)
     private DeliveryAddress deliveryAddress;
 
     public static Shipping ofNewShipping(DeliveryAddress deliveryAddress) {

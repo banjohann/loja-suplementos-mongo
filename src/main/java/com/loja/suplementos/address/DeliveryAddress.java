@@ -1,4 +1,4 @@
-package com.loja.suplementos.customer.domain;
+package com.loja.suplementos.address;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

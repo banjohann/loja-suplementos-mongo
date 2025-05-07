@@ -1,11 +1,10 @@
-package com.loja.suplementos.customer;
+package com.loja.suplementos.address;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -18,30 +17,17 @@ import java.util.Map;
 @Slf4j
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/customers")
-public class CustomerRestController {
+@RequestMapping("/api/address")
+public class DeliveryAddressRestController {
 
-    private final CustomerService service;
+    private final DeliveryAddressService service;
 
     @PostMapping("")
     public ResponseEntity<?> save(@RequestBody Map<String, String> data) {
         try {
-            this.service.save(data);
+            service.save(data);
         } catch (Exception e) {
-            log.error(e.getMessage());
-
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("errorMessage", e.getMessage()));
-        }
-
-        return ResponseEntity.ok().build();
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteCustomer(@PathVariable Long id) {
-        try {
-            this.service.delete(id);
-        } catch (Exception e) {
-            log.error(e.getMessage());
+            log.error("Erro ao salvar endereço", e);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("errorMessage", e.getMessage()));
         }
 
@@ -49,9 +35,21 @@ public class CustomerRestController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> editCustomer(@PathVariable Long id, @RequestBody Map<String, String> data) {
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Map<String, String> data) {
         try {
-            this.service.update(data);
+            service.update(id, data);
+        } catch (Exception e) {
+            log.error("Erro ao salvar endereço", e);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("errorMessage", e.getMessage()));
+        }
+
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable Long addressId) {
+        try {
+            this.service.delete(addressId);
         } catch (Exception e) {
             log.error(e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("errorMessage", e.getMessage()));

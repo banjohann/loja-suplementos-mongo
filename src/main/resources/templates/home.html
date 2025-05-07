@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Home</title>
-        <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+        <script src="https://cdn.tailwindcss.com"></script>
     </head>
     <body class="bg-gray-100 text-gray-900">
         <div th:replace="~{partials/header :: header}"></div>
@@ -17,6 +17,9 @@
                 </li>
                 <li>
                     <a href="/customers" class="block bg-white text-gray-900 text-center py-4 rounded-lg shadow-md transform hover:scale-105 transition-transform duration-200">Clientes</a>
+                </li>
+                <li>
+                    <a href="/address" class="block bg-white text-gray-900 text-center py-4 rounded-lg shadow-md transform hover:scale-105 transition-transform duration-200">Endereços</a>
                 </li>
                 <li>
                     <a href="/brands" class="block bg-white text-gray-900 text-center py-4 rounded-lg shadow-md transform hover:scale-105 transition-transform duration-200">Marcas</a>

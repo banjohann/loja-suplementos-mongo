@@ -56,6 +56,6 @@ public class CustomerController {
         model.addAttribute("customer", customer);
         model.addAttribute("deliveryAddresses", customer.getDeliveryAddresses());
 
-        return "addresses/addresses";
+        return "index";
     }
 }

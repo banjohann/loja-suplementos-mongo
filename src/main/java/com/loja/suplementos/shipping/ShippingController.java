@@ -1,6 +1,6 @@
 package com.loja.suplementos.shipping;
 
-import com.loja.suplementos.customer.repository.DeliveryAddressRepository;
+import com.loja.suplementos.address.repository.DeliveryAddressRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

@@ -1,6 +1,6 @@
-package com.loja.suplementos.customer.repository;
+package com.loja.suplementos.address.repository;
 
-import com.loja.suplementos.customer.domain.DeliveryAddress;
+import com.loja.suplementos.address.DeliveryAddress;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;

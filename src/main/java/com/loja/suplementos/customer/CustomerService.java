@@ -1,9 +1,9 @@
 package com.loja.suplementos.customer;
 
 import com.loja.suplementos.customer.domain.Customer;
-import com.loja.suplementos.customer.domain.DeliveryAddress;
+import com.loja.suplementos.address.DeliveryAddress;
 import com.loja.suplementos.customer.repository.CustomerRepository;
-import com.loja.suplementos.customer.repository.DeliveryAddressRepository;
+import com.loja.suplementos.address.repository.DeliveryAddressRepository;
 import com.loja.suplementos.utils.Utils;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -78,51 +78,7 @@ public class CustomerService {
         customerRepository.delete(customer);
     }
 
-    public void addDeliveryAddress(Long customerId, Map<String, String> params) {
-        var customer = customerRepository
-            .findById(customerId)
-            .orElseThrow(() -> new IllegalArgumentException("Cliente não encontrado"));
-
-        var deliveryAddress = new DeliveryAddress(
-            params.get("street"),
-            params.get("number"),
-            params.get("neighborhood"),
-            params.get("city"),
-            params.get("state"),
-            params.get("zipCode"),
-            customerId
-        );
-
-        customer.addDeliveryAddress(deliveryAddress);
-
-        deliveryAddressRepository.save(deliveryAddress);
-        customerRepository.save(customer);
-    }
-
     public List<Customer> findAll() {
         return customerRepository.findAll();
-    }
-
-    public void deleteDeliveryAddress(Long addressId) {
-        var deliveryAddress = deliveryAddressRepository.findById(addressId).orElseThrow(() -> new IllegalArgumentException("Endereço não encontrado"));
-
-        deliveryAddressRepository.delete(deliveryAddress);
-    }
-
-    public void editDeliveryAddress(Long customerId, Map<String, String> data) {
-        customerRepository
-            .findById(customerId)
-            .orElseThrow(() -> new IllegalArgumentException("Cliente não encontrado"));
-
-        var deliveryAddress = deliveryAddressRepository.findById(Long.valueOf(data.get("addressId"))).orElseThrow(() -> new IllegalArgumentException("Endereço não encontrado"));
-
-        deliveryAddress.setStreet(data.get("street"));
-        deliveryAddress.setNumber(data.get("number"));
-        deliveryAddress.setNeighborhood(data.get("neighborhood"));
-        deliveryAddress.setCity(data.get("city"));
-        deliveryAddress.setState(data.get("state"));
-        deliveryAddress.setZipCode(data.get("zipCode"));
-
-        deliveryAddressRepository.save(deliveryAddress);
     }
 }

@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.loja.suplementos.customer.domain.Customer;
-import com.loja.suplementos.customer.domain.DeliveryAddress;
 import com.loja.suplementos.payment.domain.Payment;
 import com.loja.suplementos.shipping.domain.Shipping;
 

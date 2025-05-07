@@ -1,5 +1,6 @@
 package com.loja.suplementos.customer.domain;
 
+import com.loja.suplementos.address.DeliveryAddress;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
