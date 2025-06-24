@@ -35,7 +35,7 @@ public class BrandRestController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable("id") Long id, @RequestBody Map<String, String> data) {
+    public ResponseEntity<?> update(@PathVariable("id") String id, @RequestBody Map<String, String> data) {
         try {
             this.brandService.update(id, data);
         } catch (Exception e) {
@@ -47,7 +47,7 @@ public class BrandRestController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable("id") Long id) {
+    public ResponseEntity<?> delete(@PathVariable("id") String id) {
         try {
             this.brandService.deleteById(id);
         } catch (Exception e) {

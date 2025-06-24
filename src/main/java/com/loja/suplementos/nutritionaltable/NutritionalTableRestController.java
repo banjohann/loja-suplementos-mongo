@@ -34,7 +34,7 @@ public class NutritionalTableRestController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable("id") long id, @RequestBody Map<String, String> data){
+    public ResponseEntity<?> update(@PathVariable("id") String id, @RequestBody Map<String, String> data){
         try {
             this.service.update(id, data);
         } catch (Exception e) {
@@ -46,7 +46,7 @@ public class NutritionalTableRestController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable("id") long id){
+    public ResponseEntity<?> delete(@PathVariable("id") String id){
         try {
             this.service.delete(id);
         } catch (Exception e) {

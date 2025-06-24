@@ -39,7 +39,7 @@ public class CustomerRestController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteCustomer(@PathVariable Long id) {
+    public ResponseEntity<?> deleteCustomer(@PathVariable String id) {
         try {
             this.service.delete(id);
         } catch (Throwable e) {
@@ -52,7 +52,7 @@ public class CustomerRestController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> editCustomer(@PathVariable Long id, @RequestBody Map<String, String> data) {
+    public ResponseEntity<?> editCustomer(@PathVariable String id, @RequestBody Map<String, String> data) {
         try {
             this.service.update(data);
         } catch (Exception e) {

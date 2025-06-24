@@ -1,4 +1,4 @@
-package com.loja.suplementos.shipping.domain;
+package com.loja.suplementos.sale.domain;
 
 import lombok.Getter;
 

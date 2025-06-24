@@ -1,10 +1,14 @@
 spring:
   profiles:
-    active: Postgres
-  datasource:
-    url: jdbc:postgresql://localhost:5432/loja-suplementos
-    username: loja-suplementos-admin
-    password: umasenhanadasegura
+    active: mongo
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: loja-suplementos
+      username: mongodb-admin
+      password: umasenhanadasegura
+      authentication-database: admin
   jpa:
     hibernate:
       ddl-auto: validate

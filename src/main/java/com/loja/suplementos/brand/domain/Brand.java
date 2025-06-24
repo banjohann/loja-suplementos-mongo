@@ -1,35 +1,25 @@
 package com.loja.suplementos.brand.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Entity
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "brand")
+@Document(collection = "brands")
 public class Brand {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) 
-    private Long id;
+    private String id;
 
     private String shortName;
 
     private String name;
-
-    public Brand(String name, String shortName) {
-        this.name = name;
-        this.shortName = shortName;
-    }
 }

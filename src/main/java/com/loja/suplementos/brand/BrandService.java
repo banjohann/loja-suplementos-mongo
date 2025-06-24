@@ -18,7 +18,7 @@ public class BrandService {
         return brandRepository.findAll();
     }
 
-    public Brand findById(long id) {
+    public Brand findById(String id) {
         return brandRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Marca não encontrada com o id: " + id));
     }
@@ -27,7 +27,7 @@ public class BrandService {
         brandRepository.save(brand);
     }
 
-    public void update(long id, Map<String, String> data) {
+    public void update(String id, Map<String, String> data) {
         Brand existingBrand = findById(id);
 
         existingBrand.setName(data.get("name"));
@@ -36,7 +36,7 @@ public class BrandService {
         brandRepository.save(existingBrand);
     }
 
-    public void deleteById(long id) {
+    public void deleteById(String id) {
         Brand brand = findById(id);
 
         brandRepository.delete(brand);

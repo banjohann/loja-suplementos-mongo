@@ -36,7 +36,7 @@ public class SaleRestController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateSale(@PathVariable Long id, @RequestBody SaleDTO saleDTO) {
+    public ResponseEntity<?> updateSale(@PathVariable String id, @RequestBody SaleDTO saleDTO) {
         try {
             service.update(id, saleDTO);
         } catch (Exception e) {
@@ -48,7 +48,7 @@ public class SaleRestController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteSale(@PathVariable Long id) {
+    public ResponseEntity<?> deleteSale(@PathVariable String id) {
         try {
             service.delete(id);
         } catch (Exception e) {

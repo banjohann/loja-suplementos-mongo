@@ -37,7 +37,7 @@ public class ProductRestController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable("id") Long id) {
+    public ResponseEntity<?> delete(@PathVariable("id") String id) {
         try {
             this.productService.delete(id);
         } catch (Exception e) {
@@ -49,7 +49,7 @@ public class ProductRestController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable("id") Long id, @RequestBody Map<String, String> data) {
+    public ResponseEntity<?> update(@PathVariable("id") String id, @RequestBody Map<String, String> data) {
         try {
             this.productService.update(id, data);
         } catch (Exception e) {

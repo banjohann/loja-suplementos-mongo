@@ -13,8 +13,8 @@
             <div class="mb-4">
                 <h2 class="text-lg font-semibold">Informações do Pagamento</h2>
                 <p><strong>ID:</strong> <span th:text="${payment.id}"></span></p>
-                <p><strong>Método de Pagamento:</strong> <span th:text="${payment.paymentMethod}"></span></p>
-                <p><strong>Status:</strong> <span th:text="${payment.status}"></span></p>
+                <p><strong>Método de Pagamento:</strong> <span th:text="${payment.paymentMethod.getDescription()}"></span></p>
+                <p><strong>Status:</strong> <span th:text="${payment.status.getDescription()}"></span></p>
                 <p><strong>Valor:</strong> <span th:text="${payment.amount}"></span></p>
                 <p><strong>Data da Transação:</strong> <span th:text="${#dates.format(payment.transactionDate, 'dd/MM/yyyy')}"></span></p>
             </div>

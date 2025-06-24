@@ -1,7 +1,7 @@
 package com.loja.suplementos.address;
 
-import com.loja.suplementos.address.repository.DeliveryAddressRepository;
 import com.loja.suplementos.customer.CustomerService;
+import com.loja.suplementos.customer.domain.Customer;
 import com.loja.suplementos.customer.repository.CustomerRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -9,6 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -17,23 +19,27 @@ public class DeliveryAddressService {
 
     private final CustomerService customerService;
     private final CustomerRepository customerRepository;
-    private final DeliveryAddressRepository deliveryAddressRepository;
+
+    public DeliveryAddress findById(String customerId, String id) {
+        return customerRepository.findById(customerId).orElseThrow(() -> new IllegalArgumentException("Cliente não encontrado"))
+            .getDeliveryAddresses().stream()
+            .filter(address -> address.getId().equals(id))
+            .findFirst()
+            .orElseThrow(() -> new IllegalArgumentException("Endereço de entrega não encontrado"));
+    }
 
     public List<DeliveryAddress> findAll() {
-        return deliveryAddressRepository.findAll();
+        return customerRepository.findAll().stream().flatMap(customer -> customer.getDeliveryAddresses().stream()).collect(Collectors.toList());
     }
 
-    public List<DeliveryAddress> findByCustomer(Long customerId) {
-        return deliveryAddressRepository.findAllFromCustomer(customerId);
-    }
-
-    public DeliveryAddress findById(Long id) {
-        return deliveryAddressRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Endereço de entrega não encontrado com o ID: " + id));
+    public Set<DeliveryAddress> findByCustomer(String customerId) {
+        return customerRepository.findById(customerId)
+            .orElseThrow(() -> new IllegalArgumentException("Cliente não encontrado"))
+            .getDeliveryAddresses();
     }
 
     public void save(Map<String, String> params) {
-        var customer = customerService.findById(Long.parseLong(params.get("customerId")));
+        var customer = customerService.findById(params.get("customerId"));
 
         var deliveryAddress = new DeliveryAddress(
             params.get("street"),
@@ -41,16 +47,19 @@ public class DeliveryAddressService {
             params.get("neighborhood"),
             params.get("city"),
             params.get("state"),
-            params.get("zipCode"),
-            customer.getId()
+            params.get("zipCode")
         );
 
-        deliveryAddressRepository.save(deliveryAddress);
+        customer.getDeliveryAddresses().add(deliveryAddress);
+        customerRepository.save(customer);
     }
 
-    public void update(Long id, Map<String, String> params) {
-        var customer = customerService.findById(Long.parseLong(params.get("customerId")));
-        var deliveryAddress = findById(id);
+    public void update(String id, Map<String, String> params) {
+        var customer = customerService.findById(params.get("customerId"));
+        var deliveryAddress = customer.getDeliveryAddresses().stream()
+            .filter(address -> address.getId().equals(id))
+            .findFirst()
+            .orElseThrow(() -> new IllegalArgumentException("Endereço de entrega não encontrado"));
 
         deliveryAddress.setStreet(params.get("street"));
         deliveryAddress.setNumber(params.get("number"));
@@ -58,17 +67,12 @@ public class DeliveryAddressService {
         deliveryAddress.setCity(params.get("city"));
         deliveryAddress.setState(params.get("state"));
         deliveryAddress.setZipCode(params.get("zipCode"));
-        deliveryAddress.setCustomerId(customer.getId());
 
-        deliveryAddressRepository.save(deliveryAddress);
+        customerRepository.save(customer);
     }
 
-    public void delete(Long addressId) {
-        var deliveryAddress = findById(addressId);
-        try {
-            deliveryAddressRepository.delete(deliveryAddress);
-        } catch (Exception e) {
-            throw new RuntimeException("Não pode excluir o endereço de entrega, pois ele está associado a uma entrega. Apague a entrega primeiro.");
-        }
+    public void delete(String addressId, String customerId) {
+        Customer customer = customerService.findById(customerId);
+        customer.getDeliveryAddresses().removeIf(address -> address.getId().equals(addressId));
     }
 }

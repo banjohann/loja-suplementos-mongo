@@ -1,21 +1,17 @@
 package com.loja.suplementos.product.repository;
 
 import com.loja.suplementos.product.domain.Product;
+import org.springframework.context.annotation.Profile;
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
-public interface ProductRepository {
+@Repository
+@Profile("mongo")
+public interface ProductRepository extends MongoRepository<Product, String> {
 
-    void save(Product product);
-
-    Optional<Product> findById(Long id);
-
-    void update(Product product);
-
-    void delete(Product product);
-
-    List<Product> findAll();
-
+    @Query("{ 'quantityInStock' : { $gt : 0 } }")
     List<Product> findAllInStock();
 }

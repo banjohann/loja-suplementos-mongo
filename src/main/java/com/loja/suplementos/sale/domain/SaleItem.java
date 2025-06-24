@@ -2,38 +2,26 @@ package com.loja.suplementos.sale.domain;
 
 import com.loja.suplementos.product.domain.Product;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
-@Entity 
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "sale_item")
 public class SaleItem {
-    
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
-    private Long saleId;
+    private String id = UUID.randomUUID().toString();
 
-    @ManyToOne
-    @JoinColumn(name = "product_id")
+    @DBRef
     private Product product;
 
     private int quantity;

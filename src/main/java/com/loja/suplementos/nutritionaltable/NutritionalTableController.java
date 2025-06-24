@@ -21,7 +21,7 @@ public class NutritionalTableController {
     }
 
     @GetMapping("/{id}")
-    public String details(@PathVariable("id") long id, Model model) {
+    public String details(@PathVariable("id") String id, Model model) {
         model.addAttribute("nutritionalTable", service.findById(id));
         return "nutritional-tables/details";
     }
@@ -32,7 +32,7 @@ public class NutritionalTableController {
     }
 
     @GetMapping("/edit/{id}")
-    public String editNutritionalTable(@PathVariable long id, Model model) {
+    public String editNutritionalTable(@PathVariable String id, Model model) {
         model.addAttribute("nutritionalTable", service.findById(id));
         return "nutritional-tables/edit";
     }

@@ -15,14 +15,14 @@
                     <label for="paymentMethod" class="block text-gray-700">Método de Pagamento:</label>
                     <select id="paymentMethod" name="paymentMethod" class="mt-1 p-2 border rounded w-full" required>
                         <option value="" disabled>Selecione um método</option>
-                        <option th:each="method : ${paymentMethods}" th:value="${method}" th:text="${method}" th:selected="${method == payment.paymentMethod}"></option>
+                        <option th:each="method : ${paymentMethods}" th:value="${method}" th:text="${method.getDescription()}" th:selected="${method == payment.paymentMethod}"></option>
                     </select>
                 </div>
                 <div>
                     <label for="status" class="block text-gray-700">Status:</label>
                     <select id="status" name="status" class="mt-1 p-2 border rounded w-full" required>
                         <option value="" disabled>Selecione um status</option>
-                        <option th:each="status : ${paymentStatuses}" th:value="${status}" th:text="${status}" th:selected="${status == payment.status}"></option>
+                        <option th:each="status : ${paymentStatuses}" th:value="${status}" th:text="${status.getDescription()}" th:selected="${status == payment.status}"></option>
                     </select>
                 </div>
                 <div>

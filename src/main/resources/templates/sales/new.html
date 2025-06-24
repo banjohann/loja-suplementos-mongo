@@ -15,7 +15,7 @@
                 <label for="customerId" class="block text-gray-700">Cliente:</label>
                 <select id="customerId" name="customerId" class="mt-1 p-2 border rounded w-full" required>
                     <option value="" disabled selected>Selecione um cliente</option>
-                    <option th:each="customer : ${customers}" th:value="${customer.id}" th:text="${customer.name}">
+                    <option th:each="customer : ${customers}" th:value="${customer.id}" th:text="${customer.getFullName()}">
                     </option>
                 </select>
             </div>

@@ -1,26 +1,20 @@
 package com.loja.suplementos.address;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.loja.suplementos.sale.dto.ShippingDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.Id;
 
-@Entity
+import java.util.UUID;
+
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name = "delivery_address")
 public class DeliveryAddress {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    private Long customerId;
+    private String id;
 
     private String street;
 
@@ -34,17 +28,21 @@ public class DeliveryAddress {
 
     private String zipCode;
 
-    public DeliveryAddress(String street, String number, String neighborhood, String city, String state, String zipCode, Long customerId) {
+    public DeliveryAddress(String street, String number, String neighborhood, String city, String state, String zipCode) {
+        this.id = UUID.randomUUID().toString();
         this.street = street;
         this.number = number;
         this.neighborhood = neighborhood;
         this.city = city;
         this.state = state;
         this.zipCode = zipCode;
-        this.customerId = customerId;
     }
 
     public String getFullAddress() {
         return street + ", " + number + ", " + neighborhood + ", " + city + ", " + state + ", " + zipCode;
+    }
+
+    public DeliveryAddress clone() {
+        return new DeliveryAddress(street, number, neighborhood, city, state, zipCode);
     }
 }

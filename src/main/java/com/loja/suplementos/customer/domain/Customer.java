@@ -1,30 +1,27 @@
 package com.loja.suplementos.customer.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.loja.suplementos.address.DeliveryAddress;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
+import java.util.Set;
 
-@Entity
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "customer")
+@Document(collection = "customers")
 public class Customer {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) 
-    private Long id;
+    private String id;
 
     private String name;
 
@@ -37,4 +34,10 @@ public class Customer {
     private String cpf;
 
     private Date birthDate;
+
+    private Set<DeliveryAddress> deliveryAddresses;
+
+    public String getFullName() {
+        return name + " " + lastName;
+    }
 }

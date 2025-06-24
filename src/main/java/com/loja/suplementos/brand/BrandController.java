@@ -26,7 +26,7 @@ public class BrandController {
     }
 
     @GetMapping("/{id}/edit")
-    public String editBrandForm(@PathVariable Long id, Model model) {
+    public String editBrandForm(@PathVariable String id, Model model) {
         var brand = brandService.findById(id);
         model.addAttribute("brand", brand);
         return "brands/edit";

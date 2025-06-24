@@ -18,7 +18,7 @@ public class NutritionalTableService {
         return repository.findAll();
     }
 
-    public NutritionalTable findById(long id) {
+    public NutritionalTable findById(String id) {
         return this.repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Tabela nutricional não encontrada com o id: " + id));
     }
 
@@ -35,7 +35,7 @@ public class NutritionalTableService {
         this.repository.save(nutritionalTable);
     }
 
-    public void update(long id, Map<String, String> data) {
+    public void update(String id, Map<String, String> data) {
         NutritionalTable existingNutritionalTable = repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Tabela nutricional não encontrada com o id: " + id));
 
         existingNutritionalTable.setCalories(Integer.parseInt(data.get("calories")));
@@ -48,7 +48,7 @@ public class NutritionalTableService {
         this.repository.save(existingNutritionalTable);
     }
 
-    public void delete(long id) {
+    public void delete(String id) {
         NutritionalTable nutritionalTable = repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Tabela nutricional não encontrada com o id: " + id));
         this.repository.delete(nutritionalTable);
     }

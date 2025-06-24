@@ -23,7 +23,7 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public String detail(@PathVariable Long id, Model model) {
+    public String detail(@PathVariable String id, Model model) {
         var product = service.findById(id);
         model.addAttribute("product", product);
         return "products/details";
@@ -38,7 +38,7 @@ public class ProductController {
     }
 
     @GetMapping("/{id}/edit")
-    public String editProductForm(@PathVariable Long id, Model model) {
+    public String editProductForm(@PathVariable String id, Model model) {
         var product = service.findById(id);
         model.addAttribute("product", product);
         model.addAttribute("brands", service.getAllBrands());

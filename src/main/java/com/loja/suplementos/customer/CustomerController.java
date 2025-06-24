@@ -26,7 +26,7 @@ public class CustomerController {
     }
 
     @GetMapping("/{id}")
-    public String getCustomerDetails(@PathVariable Long id, Model model) {
+    public String getCustomerDetails(@PathVariable String id, Model model) {
         Customer customer = service.findById(id);
         var addresses = deliveryAddressService.findByCustomer(id);
         model.addAttribute("customer", customer);
@@ -41,7 +41,7 @@ public class CustomerController {
     }
 
     @GetMapping("/{id}/edit")
-    public String editCustomerForm(@PathVariable Long id, Model model) {
+    public String editCustomerForm(@PathVariable String id, Model model) {
         Customer customer = service.findById(id);
         model.addAttribute("customer", customer);
 

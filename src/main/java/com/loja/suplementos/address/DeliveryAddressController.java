@@ -32,9 +32,9 @@ public class DeliveryAddressController {
         return "addresses/new";
     }
 
-    @GetMapping("/edit/{id}")
-    public String edit(@PathVariable Long id, Model model) {
-        var deliveryAddress = service.findById(id);
+    @GetMapping("/edit/{customerId}/{id}")
+    public String edit(@PathVariable String customerId, @PathVariable String id, Model model) {
+        var deliveryAddress = service.findById(customerId, id);
         model.addAttribute("address", deliveryAddress);
         model.addAttribute("customers", customerService.findAll());
 

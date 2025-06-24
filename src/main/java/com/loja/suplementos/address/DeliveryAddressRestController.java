@@ -35,7 +35,7 @@ public class DeliveryAddressRestController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Map<String, String> data) {
+    public ResponseEntity<?> update(@PathVariable String id, @RequestBody Map<String, String> data) {
         try {
             service.update(id, data);
         } catch (Exception e) {
@@ -46,10 +46,10 @@ public class DeliveryAddressRestController {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long addressId) {
+    @DeleteMapping("/{customerId}/{addressId}")
+    public ResponseEntity<?> delete(@PathVariable String customerId, @PathVariable String addressId) {
         try {
-            this.service.delete(addressId);
+            this.service.delete(customerId, addressId);
         } catch (Exception e) {
             log.error(e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("errorMessage", e.getMessage()));

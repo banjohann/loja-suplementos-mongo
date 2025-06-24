@@ -12,7 +12,7 @@
                 <h2 class="text-lg font-semibold">Informações da Venda</h2>
                 <p><strong>ID da Venda:</strong> <span th:text="${sale.id}"></span></p>
                 <p><strong>Cliente:</strong> <span th:text="${sale.customer.name + ' ' + sale.customer.lastName}"></span></p>
-                <p><strong>Endereço de Entrega:</strong> <span th:text="${sale.deliveryAddress.getFullAddress()}"></span></p>
+                <p><strong>Endereço de Entrega:</strong> <span th:text="${sale.shipping.deliveryAddress.getFullAddress()}"></span></p>
                 <p><strong>Data da Venda:</strong> <span th:text="${sale.getDateCreated()}"></span></p>
             </div>
             <div class="mb-4">
@@ -45,7 +45,7 @@
             </div>
             <div class="mt-4">
                 <a th:href="@{/sales}" class="bg-gray-500 text-white px-4 py-2 rounded">Voltar</a>
-                <a th:href="@{/sales/{id}(id=${sale.id})}" class="bg-blue-500 text-white px-4 py-2 rounded">Detalhes da Venda</a>
+                <a th:href="@{/shipping/{id}(id=${sale.shipping.id})}" class="bg-blue-500 text-white px-4 py-2 rounded">Detalhes da Entrega</a>
                 <a th:href="@{/payments/{id}(id=${sale.payment.id})}" class="bg-green-500 text-white px-4 py-2 rounded">Detalhes do Pagamento</a>
             </div>
         </div>

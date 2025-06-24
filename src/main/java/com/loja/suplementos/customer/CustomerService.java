@@ -1,12 +1,10 @@
 package com.loja.suplementos.customer;
 
 import com.loja.suplementos.customer.domain.Customer;
-import com.loja.suplementos.address.DeliveryAddress;
 import com.loja.suplementos.customer.repository.CustomerRepository;
-import com.loja.suplementos.address.repository.DeliveryAddressRepository;
 import com.loja.suplementos.utils.Utils;
-import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -45,7 +43,7 @@ public class CustomerService {
         customerRepository.save(customer);
     }
 
-    public Customer findById(Long id) {
+    public Customer findById(String id) {
         return customerRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Cliente não encontrado"));
     }
 
@@ -54,7 +52,7 @@ public class CustomerService {
         var cpf = params.get("cpf");
 
         Customer existingCustomer = customerRepository
-            .findById(Long.valueOf(params.get("id")))
+            .findById(params.get("id"))
             .orElseThrow(() -> new IllegalArgumentException("Cliente não encontrado"));
 
         if (!existingCustomer.getCpf().equals(cpf)) throw new IllegalArgumentException("Não é possível alterar o CPF");
@@ -65,10 +63,10 @@ public class CustomerService {
         existingCustomer.setBirthDate(Utils.convertStringToDate(params.get("birthDate")));
         existingCustomer.setPhone(params.get("phoneNumber"));
 
-        customerRepository.update(existingCustomer);
+        customerRepository.save(existingCustomer);
     }
 
-    public void delete(Long customerId) {
+    public void delete(String customerId) {
         var customer = customerRepository
             .findById(customerId)
             .orElseThrow(() -> new IllegalArgumentException("Cliente não encontrado"));

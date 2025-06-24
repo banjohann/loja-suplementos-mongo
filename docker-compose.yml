@@ -1,18 +1,18 @@
 version: '3.8'
 
 services:
-  postgres:
-    image: postgres:15
-    container_name: postgres_container
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb_container
     restart: always
     environment:
-      POSTGRES_DB: loja-suplementos
-      POSTGRES_USER: loja-suplementos-admin
-      POSTGRES_PASSWORD: umasenhanadasegura
+      MONGO_INITDB_ROOT_USERNAME: mongodb-admin
+      MONGO_INITDB_ROOT_PASSWORD: umasenhanadasegura
+      MONGO_INITDB_DATABASE: loja-suplementos-reports
     ports:
-      - "5432:5432"
+      - "27017:27017"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - mongodb_data:/data/db
 
 volumes:
-  postgres_data:
+  mongodb_data:

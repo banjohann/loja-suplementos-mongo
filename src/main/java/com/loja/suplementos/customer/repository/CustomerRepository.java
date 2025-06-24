@@ -1,21 +1,13 @@
 package com.loja.suplementos.customer.repository;
 
-import java.util.List;
-import java.util.Optional;
-
 import com.loja.suplementos.customer.domain.Customer;
+import org.springframework.context.annotation.Profile;
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.stereotype.Repository;
 
-public interface CustomerRepository {
-    
-    void save(Customer customer);
-
-    Optional<Customer> findById(Long id);
-
-    void update(Customer customer);
-
-    void delete(Customer customer);
+@Repository
+@Profile("mongo")
+public interface CustomerRepository extends MongoRepository<Customer, String> {
 
     Customer findByEmailOrCpf(String email, String cpf);
-
-    List<Customer> findAll();
 }

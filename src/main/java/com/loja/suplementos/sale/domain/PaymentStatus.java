@@ -1,4 +1,4 @@
-package com.loja.suplementos.payment.domain;
+package com.loja.suplementos.sale.domain;
 
 public enum PaymentStatus {
     PENDING("Pendente"),

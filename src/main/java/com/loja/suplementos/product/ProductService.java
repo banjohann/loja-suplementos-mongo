@@ -7,9 +7,9 @@ import com.loja.suplementos.product.domain.ProductType;
 import com.loja.suplementos.brand.repository.BrandRepository;
 import com.loja.suplementos.nutritionaltable.repository.NutritionalTableRepository;
 import com.loja.suplementos.product.repository.ProductRepository;
-import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -32,14 +32,14 @@ public class ProductService {
         return productRepository.findAllInStock();
     }
 
-    public Product findById(Long id) {
+    public Product findById(String id) {
         return productRepository.findById(id)
             .orElseThrow(() -> new IllegalArgumentException("Produto não encontrado"));
     }
 
     public void save(Map<String, String> data) {
-        var brandId = Long.parseLong(data.get("brandId"));
-        var nutritionalTableId = Long.parseLong(data.get("nutritionalTableId"));
+        var brandId = data.get("brandId");
+        var nutritionalTableId = data.get("nutritionalTableId");
 
         var brand = brandRepository.findById(brandId)
             .orElseThrow(() -> new IllegalArgumentException("Marca não encontrada"));
@@ -61,15 +61,15 @@ public class ProductService {
         productRepository.save(product);
     }
 
-    public void delete(Long id) {
+    public void delete(String id) {
         Product product = productRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Produto não encontrado"));
 
         productRepository.delete(product);
     }
 
-    public void update(Long id, Map<String, String> data) {
-        var brandId = Long.parseLong(data.get("brandId"));
-        var nutritionalTableId = Long.parseLong(data.get("nutritionalTableId"));
+    public void update(String id, Map<String, String> data) {
+        var brandId = data.get("brandId");
+        var nutritionalTableId = data.get("nutritionalTableId");
 
         var brand = brandRepository.findById(brandId)
             .orElseThrow(() -> new IllegalArgumentException("Marca não encontrada"));
@@ -88,7 +88,7 @@ public class ProductService {
         product.setType(ProductType.valueOf(data.get("type")));
         product.setQuantityInStock(Integer.parseInt(data.get("quantityInStock")));
 
-        productRepository.update(product);
+        productRepository.save(product);
     }
 
     public List<Brand> getAllBrands() {
