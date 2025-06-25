@@ -2,7 +2,10 @@ package com.loja.suplementos.sale;
 
 import com.loja.suplementos.customer.CustomerService;
 import com.loja.suplementos.product.ProductService;
+import com.loja.suplementos.sale.domain.PaymentMethod;
+import com.loja.suplementos.sale.domain.PaymentStatus;
 import com.loja.suplementos.sale.domain.Sale;
+import com.loja.suplementos.sale.domain.ShippingStatus;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -57,6 +60,9 @@ public class SaleController {
 
         model.addAttribute("customers", customers);
         model.addAttribute("products", productService.findAllInStock());
+        model.addAttribute("methods", PaymentMethod.values());
+        model.addAttribute("paymentStatuses", PaymentStatus.values());
+        model.addAttribute("shippingStatuses", ShippingStatus.values());
 
         return "sales/new";
     }
@@ -69,6 +75,9 @@ public class SaleController {
         model.addAttribute("sale", sale);
         model.addAttribute("customers", customers);
         model.addAttribute("products", productService.findAllInStock());
+        model.addAttribute("methods", PaymentMethod.values());
+        model.addAttribute("paymentStatuses", PaymentStatus.values());
+        model.addAttribute("shippingStatuses", ShippingStatus.values());
 
         return "sales/edit";
     }

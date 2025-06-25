@@ -12,28 +12,48 @@
         </div>
         <form id="sale-form">
             <div class="mb-4">
-                <label for="customerId" class="block text-gray-700">Customer:</label>
+                <label for="customerId" class="block text-gray-700">Cliente:</label>
                 <select id="customerId" name="customerId" class="mt-1 p-2 border rounded w-full" required>
-                    <option value="" disabled>Selecione um cliente</option>
-                    <option th:each="customer : ${customers}" th:value="${customer.id}" th:text="${customer.name}" th:selected="${customer.id == sale.customer.id}"></option>
+                    <option value="" disabled selected>Selecione um cliente</option>
+                    <option th:each="customer : ${customers}" th:value="${customer.id}" th:text="${customer.getFullName()}" th:selected="${customer.id == sale.getCustomer().getId()}">
+                    </option>
+                </select>
+            </div>
+            <h3 class="text-lg font-semibold mb-2">Informações de Entrega</h3>
+            <div class="mb-4">
+                <label for="deliveryAddress" class="block text-gray-700">Endereço de Entrega:</label>
+                <select id="deliveryAddress" name="deliveryAddress" class="mt-1 p-2 border rounded w-full" required>
+                    <option value="" disabled selected>Selecione um endereço de entrega</option>
                 </select>
             </div>
             <div class="mb-4">
-                <label for="shipping" class="block text-gray-700">Método de Entrega:</label>
-                <select id="shipping" name="shipping" class="mt-1 p-2 border rounded w-full" required>
-                    <option value="" disabled selected>Selecione um código de entrega</option>
-                    <option th:each="shipping : ${shippings}" th:value="${shipping.id}" th:text="${shipping.getTrackingNumber()}" th:selected="${shipping.getId() == sale.shipping.id}"></option>
+                <label for="deliveryStatus" class="block text-gray-700">Status da Entrega:</label>
+                <select id="deliveryStatus" name="deliveryStatus" class="mt-1 p-2 border rounded w-full" required>
+                    <option value="" disabled selected>Selecione o status da entrega</option>
+                    <option th:each="shippingStatus : ${shippingStatuses}" th:value="${shippingStatus.name()}" th:text="${shippingStatus.getDescritption()}" th:selected="${shippingStatus == sale.getShipping().getStatus()}"></option>
                 </select>
             </div>
             <div class="mb-4">
-                <label for="payment" class="block text-gray-700">Pagamento:</label>
-                <select id="payment" name="payment" class="mt-1 p-2 border rounded w-full" required>
+                <label for="statusDescription" class="block text-gray-700">Descrição do status de entrega:</label>
+                <input type="text" id="statusDescription" name="statusDescritpion" class="mt-1 p-2 border rounded w-full" placeholder="Descrição" th:value="${sale.getShipping().getStatusDescription()}" required>
+            </div>
+            <h3 class="text-lg font-semibold mb-2">Informações de Pagamento</h3>
+            <div class="mb-4">
+                <label for="paymentMethod" class="block text-gray-700">Método de Pagamento:</label>
+                <select id="paymentMethod" name="paymentMethod" class="mt-1 p-2 border rounded w-full" required>
                     <option value="" disabled selected>Selecione uma forma de pagamento</option>
-                    <option th:each="payment : ${payments}" th:value="${payment.getId()}" th:text="${payment.getDescription()}" th:selected="${payment.getId() == sale.payment.id}"></option>
+                    <option th:each="paymentMethod : ${methods}" th:value="${paymentMethod.name()}" th:text="${paymentMethod.getDescription()}" th:selected="${paymentMethod == sale.getPayment().getPaymentMethod()}"></option>
                 </select>
             </div>
             <div class="mb-4">
-                <label class="block text-gray-700">Products:</label>
+                <label for="paymentStatus" class="block text-gray-700">Status de Pagamento:</label>
+                <select id="paymentStatus" name="paymentStatus" class="mt-1 p-2 border rounded w-full" required>
+                    <option value="" disabled selected>Selecione o status do pagamento</option>
+                    <option th:each="paymentStatus : ${paymentStatuses}" th:value="${paymentStatus.name()}" th:text="${paymentStatus.getDescription()}" th:selected="${paymentStatus == sale.getPayment().getStatus()}"></option>
+                </select>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700">Produtos:</label>
                 <div id="product-list">
                     <div th:each="item : ${sale.saleItems}" class="flex items-center mb-2">
                         <select name="productIds" class="p-2 border rounded w-3/4" required>
@@ -57,22 +77,70 @@
     /*<![CDATA[*/
     const products = /*[[${products}]]*/ [];
     const saleId = /*[[${sale.id}]]*/null;
+    const deliveryAddress = /*[[${sale.shipping.deliveryAddress}]]*/null;
     /*]]>*/
+    const addProductButton = document.getElementById('add-product');
+
+    const updateAddressesList = () => {
+        const selectedCustomerId = document.getElementById('customerId').value;
+        const deliveryAddressSelect = document.getElementById('deliveryAddress');
+
+        if (selectedCustomerId) {
+            while (deliveryAddressSelect.options.length > 1) {
+                deliveryAddressSelect.remove(1);
+            }
+
+            fetch(`/api/customers/${selectedCustomerId}/addresses`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch addresses');
+                    }
+                    return response.json();
+                })
+                .then(addresses => {
+                    addresses.forEach(address => {
+                        const option = document.createElement('option');
+                        option.value = address.id;
+                        option.textContent = `${address.street}, ${address.city}`;
+                        deliveryAddressSelect.appendChild(option);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching addresses:', error);
+                    showToast('Erro ao carregar endereços');
+                });
+        }
+    }
 
     document.addEventListener('DOMContentLoaded', function () {
         const customerSelect = document.getElementById('customerId');
-        const paymentSelect = document.getElementById('payment');
-        const shippingSelect = document.getElementById('shipping')
+        const deliveryAddressSelect = document.getElementById('deliveryAddress');
+        const paymentMethodSelect = document.getElementById('paymentMethod');
+        const paymentStatusSelect = document.getElementById('paymentStatus');
         const productList = document.getElementById('product-list');
-        const addProductButton = document.getElementById('add-product');
-        const saleForm = document.getElementById('sale-form');
+        const saleForm = document.getElementById('sale-form')
+
+        updateAddressesList();
+        setTimeout(() => {
+            if (deliveryAddress) {
+                const options = deliveryAddressSelect.options;
+                for (let i = 0; i < options.length; i++) {
+                    const option = options[i];
+                    if (option.value === deliveryAddress.id) {
+                        option.selected = true;
+                    }
+                }
+            }
+        }, 200);
+
+        customerSelect.addEventListener('change', function() {
+            updateAddressesList();
+        });
 
         saleForm.addEventListener('submit', function (event) {
             event.preventDefault();
 
             const customerId = customerSelect.value;
-            const paymentId = paymentSelect.value;
-            const shippingId = shippingSelect.value;
             const productRows = productList.querySelectorAll('div');
             const products = [];
 
@@ -83,10 +151,17 @@
             });
 
             const saleData = {
-                customerId,
-                products,
-                paymentId,
-                shippingId
+                customerId: customerId,
+                products: products,
+                payment: {
+                    paymentMethod: paymentMethodSelect.value,
+                    status: paymentStatusSelect.value
+                },
+                shipping: {
+                    deliveryAddressId: deliveryAddressSelect.value,
+                    statusDescription: document.getElementById('statusDescription').value,
+                    shippingStatus: document.getElementById('deliveryStatus').value
+                }
             };
 
             fetch(`/api/sales/${saleId}`, {
@@ -96,18 +171,18 @@
                 },
                 body: JSON.stringify(saleData)
             })
-                .then(response => {
-                    if (response.ok) {
-                        window.location.href = '/sales';
-                    } else {
-                        return response.json().then(data => {
-                            showToast(data.errorMessage || 'Erro ao atualizar a venda');
-                        });
-                    }
-                })
-                .catch(error => {
-                    showToast('Erro ao atualizar a venda');
-                });
+            .then(response => {
+                if (response.ok) {
+                    window.location.href = '/sales';
+                } else {
+                    return response.json().then(data => {
+                        showToast(data.errorMessage || 'Erro ao atualizar a venda');
+                    });
+                }
+            })
+            .catch(error => {
+                showToast('Erro ao atualizar a venda');
+            });
         });
 
         addProductButton.addEventListener('click', function () {

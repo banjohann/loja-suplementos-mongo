@@ -16,7 +16,6 @@
             <table class="min-w-full bg-white border border-gray-300 rounded-lg">
                 <thead>
                 <tr class="bg-gray-200 text-left">
-                    <th class="py-2 px-4 border-b">ID</th>
                     <th class="py-2 px-4 border-b">Descrição</th>
                     <th class="py-2 px-4 border-b">Proteína</th>
                     <th class="py-2 px-4 border-b">Porção</th>
@@ -25,9 +24,8 @@
                 </thead>
                 <tbody>
                 <tr th:each="table : ${nutritionalTables}"
-                    class="hover:bg-gray-100 cursor-pointer"
-                    th:onclick="|window.location.href='/nutritional-tables/' + ${table.id}|">
-                    <td class="py-2 px-4 border-b" th:text="${table.id}"></td>
+                    class="table-row hover:bg-gray-100 cursor-pointer"
+                    th:data-id="${table.id}">
                     <td class="py-2 px-4 border-b" th:text="${table.description}"></td>
                     <td class="py-2 px-4 border-b" th:text="${table.proteinPerServing}"></td>
                     <td class="py-2 px-4 border-b" th:text="${table.servingSize}"></td>
@@ -43,6 +41,14 @@
         </div>
     </body>
     <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll(".table-row").forEach(row => {
+                row.addEventListener("click", function () {
+                    window.location.href = '/nutritional-tables/' + this.dataset.id;
+                });
+            });
+        });
+
         document.addEventListener("DOMContentLoaded", function () {
             document.querySelectorAll(".delete-btn").forEach(button => {
                 button.addEventListener("click", function (event) {

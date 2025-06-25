@@ -1,7 +1,7 @@
 package com.loja.suplementos.sale.domain;
 
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.util.Date;
 
 import com.loja.suplementos.sale.dto.PaymentDTO;
 import lombok.AllArgsConstructor;
@@ -28,8 +28,7 @@ public class Payment {
     public Payment(PaymentDTO payment) {
         this.paymentMethod = PaymentMethod.valueOf(payment.getPaymentMethod());
         this.status = PaymentStatus.valueOf(payment.getStatus());
-        this.amount = BigDecimal.valueOf(payment.getAmount());
-        this.transactionDate = payment.getTransactionDate() != null ? new Date(payment.getTransactionDate().getTime()) : null;
+        this.transactionDate = new Date(System.currentTimeMillis());
     }
 
     public String getDescription() {

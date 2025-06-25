@@ -25,6 +25,13 @@ public class CustomerRestController {
 
     private final CustomerService service;
 
+    @GetMapping("/{id}/addresses")
+    public ResponseEntity<?> getCustomerAddresses(@PathVariable String id) {
+        var customerAddresses = this.service.findById(id).getDeliveryAddresses();
+
+        return ResponseEntity.ok(customerAddresses);
+    }
+
     @PostMapping("")
     public ResponseEntity<?> save(@RequestBody Map<String, String> data) {
         try {

@@ -19,48 +19,97 @@
                     </option>
                 </select>
             </div>
+            <h3 class="text-lg font-semibold mb-2">Informações de Entrega</h3>
             <div class="mb-4">
-                <label for="shipping" class="block text-gray-700">Entrega:</label>
-                <select id="shipping" name="shipping" class="mt-1 p-2 border rounded w-full" required>
-                    <option value="" disabled selected>Selecione um código de entrega</option>
-                    <option th:each="shipping : ${shippings}" th:value="${shipping.id}" th:text="${shipping.getTrackingNumber()}"></option>
+                <label for="deliveryAddress" class="block text-gray-700">Endereço de Entrega:</label>
+                <select id="deliveryAddress" name="deliveryAddress" class="mt-1 p-2 border rounded w-full" required>
+                    <option value="" disabled selected>Selecione um endereço de entrega</option>
                 </select>
-            </div>
-            <div class="mb-4">
-                <label for="payment" class="block text-gray-700">Pagamento:</label>
-                <select id="payment" name="payment" class="mt-1 p-2 border rounded w-full" required>
-                    <option value="" disabled selected>Selecione uma forma de pagamento</option>
-                    <option th:each="payment : ${payments}" th:value="${payment.getId()}" th:text="${payment.getDescription()}"></option>
+           </div>
+           <div class="mb-4">
+                <label for="deliveryStatus" class="block text-gray-700">Status da Entrega:</label>
+                <select id="deliveryStatus" name="deliveryStatus" class="mt-1 p-2 border rounded w-full" required>
+                    <option value="" disabled selected>Selecione o status da entrega</option>
+                    <option th:each="shippingStatus : ${shippingStatuses}" th:value="${shippingStatus.name()}" th:text="${shippingStatus.getDescritption()}"></option>
                 </select>
-            </div>
-            <div class="mb-4">
-                <label class="block text-gray-700">Produtos:</label>
-                <div id="product-list">
-                    <div class="flex items-center mb-2">
-                        <select name="products" class="p-2 border rounded w-3/4" required>
-                            <option value="" disabled selected>Selecione um produto</option>
-                            <option th:each="product : ${products}" th:value="${product.id}" th:text="${product.name}"></option>
-                        </select>
-                        <input type="number" name="quantities" class="p-2 border rounded w-1/4 ml-2" placeholder="Qtd" min="1" required>
-                        <button type="button" class="remove-product bg-red-500 text-white px-2 py-1 rounded ml-2">Remover</button>
-                    </div>
-                </div>
-                <button type="button" id="add-product" class="bg-green-500 text-white px-4 py-2 rounded mt-2">Adicionar Produto</button>
-            </div>
-            <div class="mt-4">
-                <a href="/sales" class="bg-gray-500 text-white p-2 rounded">Cancelar</a>
-                <button type="submit" class="bg-blue-500 text-white p-2 rounded float-right">Salvar</button>
-            </div>
+           </div>
+           <div class="mb-4">
+                <label for="statusDescription" class="block text-gray-700">Descrição do status de entrega:</label>
+                <input type="text" id="statusDescription" name="statusDescritpion" class="mt-1 p-2 border rounded w-full" placeholder="Descrição" required>
+           </div>
+           <h3 class="text-lg font-semibold mb-2">Informações de Pagamento</h3>
+           <div class="mb-4">
+               <label for="paymentMethod" class="block text-gray-700">Método de Pagamento:</label>
+               <select id="paymentMethod" name="paymentMethod" class="mt-1 p-2 border rounded w-full" required>
+                   <option value="" disabled selected>Selecione uma forma de pagamento</option>
+                   <option th:each="paymentMethod : ${methods}" th:value="${paymentMethod.name()}" th:text="${paymentMethod.getDescription()}"></option>
+               </select>
+           </div>
+           <div class="mb-4">
+               <label for="paymentStatus" class="block text-gray-700">Status de Pagamento:</label>
+               <select id="paymentStatus" name="paymentStatus" class="mt-1 p-2 border rounded w-full" required>
+                   <option value="" disabled selected>Selecione o status do pagamento</option>
+                   <option th:each="paymentStatus : ${paymentStatuses}" th:value="${paymentStatus.name()}" th:text="${paymentStatus.getDescription()}"></option>
+               </select>
+           </div>
+           <div class="mb-4">
+               <label class="block text-gray-700">Produtos:</label>
+               <div id="product-list">
+                   <div class="flex items-center mb-2">
+                       <select name="products" class="p-2 border rounded w-3/4" required>
+                           <option value="" disabled selected>Selecione um produto</option>
+                           <option th:each="product : ${products}" th:value="${product.id}" th:text="${product.name}"></option>
+                       </select>
+                       <input type="number" name="quantities" class="p-2 border rounded w-1/4 ml-2" placeholder="Qtd" min="1" required>
+                       <button type="button" class="remove-product bg-red-500 text-white px-2 py-1 rounded ml-2">Remover</button>
+                   </div>
+               </div>
+               <button type="button" id="add-product" class="bg-green-500 text-white px-4 py-2 rounded mt-2">Adicionar Produto</button>
+           </div>
+           <div class="mt-4">
+               <a href="/sales" class="bg-gray-500 text-white p-2 rounded">Cancelar</a>
+               <button type="submit" class="bg-blue-500 text-white p-2 rounded float-right">Salvar</button>
+           </div>
         </form>
     </div>
 </body>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const customerSelect = document.getElementById('customerId');
-        const paymentSelect = document.getElementById('payment');
-        const shippingSelect = document.getElementById('shipping');
+        const deliveryAddressSelect = document.getElementById('deliveryAddress');
+        const paymentMethodSelect = document.getElementById('paymentMethod');
+        const paymentStatusSelect = document.getElementById('paymentStatus');
         const productList = document.getElementById('product-list');
         const saleForm = document.getElementById('sale-form')
+
+        customerSelect.addEventListener('change', function() {
+            const selectedCustomerId = this.value;
+            if (selectedCustomerId) {
+                while (deliveryAddressSelect.options.length > 1) {
+                    deliveryAddressSelect.remove(1);
+                }
+
+                fetch(`/api/customers/${selectedCustomerId}/addresses`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Failed to fetch addresses');
+                        }
+                        return response.json();
+                    })
+                    .then(addresses => {
+                        addresses.forEach(address => {
+                            const option = document.createElement('option');
+                            option.value = address.id;
+                            option.textContent = `${address.street}, ${address.number} - ${address.city}`;
+                            deliveryAddressSelect.appendChild(option);
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Error fetching addresses:', error);
+                        showToast('Erro ao carregar endereços');
+                    });
+            }
+        });
 
         saleForm.addEventListener('submit', function (event) {
             event.preventDefault();
@@ -78,8 +127,15 @@
             const saleData = {
                 customerId: customerId,
                 products: products,
-                paymentId: paymentSelect.value,
-                shippingId: shippingSelect.value
+                payment: {
+                     paymentMethod: paymentMethodSelect.value,
+                     status: paymentStatusSelect.value
+                },
+                shipping: {
+                    deliveryAddressId: deliveryAddressSelect.value,
+                    statusDescription: document.getElementById('statusDescription').value,
+                    shippingStatus: document.getElementById('deliveryStatus').value
+                }
             };
 
             fetch('/api/sales', {

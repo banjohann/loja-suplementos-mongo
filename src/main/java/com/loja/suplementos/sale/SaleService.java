@@ -45,7 +45,7 @@ public class SaleService {
             .findFirst()
             .orElseThrow(() -> new IllegalArgumentException("Endereço de entrega não encontrado"));
 
-        var shipping = new Shipping(saleDTO.getShipping(), deliveryAddress.clone());
+        var shipping = new Shipping(saleDTO.getShipping(), deliveryAddress);
         var payment = new Payment(saleDTO.getPayment());
 
         var saleItems = saleDTO.getProducts().stream().map(productQuantityDTO -> {
@@ -103,7 +103,7 @@ public class SaleService {
         payment.setPaymentMethod(PaymentMethod.valueOf(saleDTO.getPayment().getPaymentMethod()));
         payment.setStatus(PaymentStatus.valueOf(saleDTO.getPayment().getStatus()));
 
-        shipping.setDeliveryAddress(deliveryAddress.clone());
+        shipping.setDeliveryAddress(deliveryAddress);
         shipping.setStatus(ShippingStatus.valueOf(saleDTO.getShipping().getShippingStatus()));
         shipping.setStatusDescription(saleDTO.getShipping().getStatusDescription());
 

@@ -28,7 +28,7 @@ public class SaleRestController {
         try {
             service.save(saleDTO);
         } catch (Exception e) {
-            log.error(e.getMessage());
+            log.error(e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("errorMessage", e.getMessage()));
         }
 
@@ -40,7 +40,7 @@ public class SaleRestController {
         try {
             service.update(id, saleDTO);
         } catch (Exception e) {
-            log.error(e.getMessage());
+            log.error(e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("errorMessage", e.getMessage()));
         }
 
@@ -52,7 +52,7 @@ public class SaleRestController {
         try {
             service.delete(id);
         } catch (Exception e) {
-            log.error(e.getMessage());
+            log.error(e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("errorMessage", e.getMessage()));
         }
 

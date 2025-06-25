@@ -41,8 +41,4 @@ public class DeliveryAddress {
     public String getFullAddress() {
         return street + ", " + number + ", " + neighborhood + ", " + city + ", " + state + ", " + zipCode;
     }
-
-    public DeliveryAddress clone() {
-        return new DeliveryAddress(street, number, neighborhood, city, state, zipCode);
-    }
 }
