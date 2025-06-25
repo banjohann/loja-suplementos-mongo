@@ -22,10 +22,10 @@ public class DeliveryAddressRestController {
 
     private final DeliveryAddressService service;
 
-    @PostMapping("")
-    public ResponseEntity<?> save(@RequestBody Map<String, String> data) {
+    @PostMapping("/{customerId}")
+    public ResponseEntity<?> save(@PathVariable String customerId, @RequestBody Map<String, String> data) {
         try {
-            service.save(data);
+            service.save(customerId, data);
         } catch (Exception e) {
             log.error("Erro ao salvar endereço", e);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("errorMessage", e.getMessage()));
@@ -34,10 +34,10 @@ public class DeliveryAddressRestController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable String id, @RequestBody Map<String, String> data) {
+    @PutMapping("/{customerId}/{id}")
+    public ResponseEntity<?> update(@PathVariable String customerId, @PathVariable String id, @RequestBody Map<String, String> data) {
         try {
-            service.update(id, data);
+            service.update(customerId, id, data);
         } catch (Exception e) {
             log.error("Erro ao salvar endereço", e);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("errorMessage", e.getMessage()));

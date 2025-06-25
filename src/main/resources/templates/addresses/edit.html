@@ -10,6 +10,7 @@
             <h1 class="text-2xl font-bold mb-6">Editar Endereço</h1>
             <form id="addressForm">
                 <input type="hidden" id="id" name="id" th:value="${address.id}"/>
+                <input type="hidden" id="customerId" name="customerId" th:value="${customer.id}"/>
                 <div class="mb-4">
                     <label for="street" class="block text-gray-700">Rua:</label>
                     <input type="text" id="street" name="street" class="mt-1 p-2 border rounded w-full" th:value="${address.street}" required/>
@@ -34,13 +35,6 @@
                     <label for="zipCode" class="block text-gray-700">CEP:</label>
                     <input type="text" id="zipCode" name="zipCode" class="mt-1 p-2 border rounded w-full" th:value="${address.zipCode}" required/>
                 </div>
-                <div class="mb-4">
-                    <label for="customerId" class="block text-gray-700">Cliente:</label>
-                    <select id="customerId" name="customerId" class="mt-1 p-2 border rounded w-full" required>
-                        <option value="" disabled selected>Selecione um cliente</option>
-                        <option th:each="customer : ${customers}" th:value="${customer.id}" th:text="${customer.name + ' ' + customer.lastName}" th:selected="${customer.id == address.customerId}"></option>
-                    </select>
-                </div>
                 <div class="flex justify-end">
                     <a href="/address" class="bg-gray-500 text-white p-2 rounded mr-2">Cancelar</a>
                     <button type="submit" class="bg-blue-500 text-white p-2 rounded">Salvar</button>
@@ -58,14 +52,13 @@
                 const id = document.getElementById('id').value;
                 const customerId = document.getElementById('customerId').value;
                 const formData = new FormData(addressForm);
-                formData.append('customerId', customerId);
 
                 const data = {};
                 formData.forEach((value, key) => {
                     data[key] = value;
                 });
 
-                fetch('/api/address/' + id, {
+                fetch(`/api/address/${customerId}/${id}`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json'
@@ -74,7 +67,7 @@
                 })
                 .then(response => {
                     if (response.ok) {
-                        window.location.href = '/address';
+                        window.location.href = `/customers/${customerId}`;
                     } else {
                         showToast('Erro ao salvar o endereço.');
                     }

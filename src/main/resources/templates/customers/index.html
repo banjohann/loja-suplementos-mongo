@@ -8,7 +8,7 @@
     </head>
     <body class="bg-gray-100">
         <div th:replace="~{partials/header :: header}"></div>
-        <div class="container mx-auto mt-8 p-8 max-w-3xl bg-white rounded-lg shadow-md">
+        <div class="container mx-auto mt-8 p-8 max-w-6xl bg-white rounded-lg shadow-md">
             <div class="flex justify-between items-center mb-4">
                 <h1 class="text-2xl font-bold">Lista de Clientes</h1>
                 <a href="/customers/new" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-400">Novo Cliente</a>
@@ -24,8 +24,8 @@
                 </thead>
                 <tbody>
                     <tr th:each="customer : ${customers}"
-                        th:onclick="|window.location.href='/customers/' + ${customer.id}|"
-                        class="cursor-pointer hover:bg-gray-100">
+                        th:data-id="${customer.id}"
+                        class="cursor-pointer hover:bg-gray-100 customer-row">
                         <td class="py-2 px-4 border-b" th:text="${customer.id}"></td>
                         <td class="py-2 px-4 border-b" th:text="${customer.name}"></td>
                         <td class="py-2 px-4 border-b" th:text="${customer.email}"></td>
@@ -41,6 +41,14 @@
         </div>
     </body>
     <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll(".customer-row").forEach(row => {
+                row.addEventListener("click", function () {
+                    window.location.href = '/customers/' + this.dataset.id;
+                });
+            });
+        });
+
         document.addEventListener("DOMContentLoaded", function () {
             document.querySelectorAll(".delete-btn").forEach(button => {
                 button.addEventListener("click", function (event) {

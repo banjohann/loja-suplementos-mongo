@@ -18,16 +18,9 @@ public class DeliveryAddressController {
     private final DeliveryAddressService service;
     private final CustomerService customerService;
 
-    @GetMapping
-    public String index(Model model) {
-        model.addAttribute("deliveryAddresses", service.findAll());
-
-        return "addresses/index";
-    }
-
-    @GetMapping("/new")
-    public String create(Model model) {
-        model.addAttribute("customers", customerService.findAll());
+    @GetMapping("/new/{customerId}")
+    public String create(@PathVariable String customerId, Model model) {
+        model.addAttribute("customer", customerService.findById(customerId));
 
         return "addresses/new";
     }
@@ -36,7 +29,7 @@ public class DeliveryAddressController {
     public String edit(@PathVariable String customerId, @PathVariable String id, Model model) {
         var deliveryAddress = service.findById(customerId, id);
         model.addAttribute("address", deliveryAddress);
-        model.addAttribute("customers", customerService.findAll());
+        model.addAttribute("customer", customerService.findById(customerId));
 
         return "addresses/edit";
     }

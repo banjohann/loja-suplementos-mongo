@@ -10,6 +10,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -35,7 +36,7 @@ public class Customer {
 
     private Date birthDate;
 
-    private Set<DeliveryAddress> deliveryAddresses;
+    private Set<DeliveryAddress> deliveryAddresses = new HashSet<>();
 
     public String getFullName() {
         return name + " " + lastName;

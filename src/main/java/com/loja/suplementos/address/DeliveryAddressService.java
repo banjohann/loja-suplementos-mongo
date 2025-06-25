@@ -38,8 +38,8 @@ public class DeliveryAddressService {
             .getDeliveryAddresses();
     }
 
-    public void save(Map<String, String> params) {
-        var customer = customerService.findById(params.get("customerId"));
+    public void save(String customerId, Map<String, String> params) {
+        var customer = customerService.findById(customerId);
 
         var deliveryAddress = new DeliveryAddress(
             params.get("street"),
@@ -50,12 +50,16 @@ public class DeliveryAddressService {
             params.get("zipCode")
         );
 
+        if (customer.getDeliveryAddresses() == null) {
+            customer.setDeliveryAddresses(Set.of());
+        }
+
         customer.getDeliveryAddresses().add(deliveryAddress);
         customerRepository.save(customer);
     }
 
-    public void update(String id, Map<String, String> params) {
-        var customer = customerService.findById(params.get("customerId"));
+    public void update(String customerId, String id, Map<String, String> params) {
+        var customer = customerService.findById(customerId);
         var deliveryAddress = customer.getDeliveryAddresses().stream()
             .filter(address -> address.getId().equals(id))
             .findFirst()
@@ -74,5 +78,7 @@ public class DeliveryAddressService {
     public void delete(String addressId, String customerId) {
         Customer customer = customerService.findById(customerId);
         customer.getDeliveryAddresses().removeIf(address -> address.getId().equals(addressId));
+
+        customerRepository.save(customer);
     }
 }
