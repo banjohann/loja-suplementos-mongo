@@ -8,11 +8,22 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: mongodb-admin
       MONGO_INITDB_ROOT_PASSWORD: umasenhanadasegura
-      MONGO_INITDB_DATABASE: loja-suplementos-reports
+      MONGO_INITDB_DATABASE: loja-suplementos
     ports:
       - "27017:27017"
     volumes:
       - mongodb_data:/data/db
+    command: --auth
+
+  app:
+    build: .
+    container_name: loja-suplementos-app
+    depends_on:
+      - mongodb
+    environment:
+      SPRING_DATA_MONGODB_URI: mongodb://mongodb-admin:umasenhanadasegura@mongodb:27017/admin?authSource=admin
+    ports:
+      - "8080:8080"
 
 volumes:
   mongodb_data:

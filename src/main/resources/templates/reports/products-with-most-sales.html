@@ -20,9 +20,9 @@
                 </thead>
                 <tbody>
                     <tr th:each="report : ${reports}">
-                        <td class="py-2 px-4 border-b" th:text="${report['productName']}"></td>
-                        <td class="py-2 px-4 border-b" th:text="${report['salesCount']}"></td>
-                        <td class="py-2 px-4 border-b" th:text="${'R$ ' + report['totalSalesValue']}"></td>
+                        <td class="py-2 px-4 border-b" th:text="${report.getProductName()}"></td>
+                        <td class="py-2 px-4 border-b" th:text="${report.getTotalSales()}"></td>
+                        <td class="py-2 px-4 border-b" th:text="${'R$ ' + report.getTotalValue()}"></td>
                     </tr>
                 </tbody>
             </table>

@@ -21,10 +21,10 @@
                 </thead>
                 <tbody>
                     <tr th:each="report : ${reports}">
-                        <td class="py-2 px-4 border-b" th:text="${report['name']}"></td>
-                        <td class="py-2 px-4 border-b" th:text="${report['lastName']}"></td>
-                        <td class="py-2 px-4 border-b" th:text="${report['purchaseCount']}"></td>
-                        <td class="py-2 px-4 border-b" th:text="${'R$ ' + report['totalPurchaseValue']}"></td>
+                        <td class="py-2 px-4 border-b" th:text="${report.name}"></td>
+                        <td class="py-2 px-4 border-b" th:text="${report.lastName}"></td>
+                        <td class="py-2 px-4 border-b" th:text="${report.purchaseCount}"></td>
+                        <td class="py-2 px-4 border-b" th:text="${'R$ ' + report.getTotalPurchaseValueString()}"></td>
                     </tr>
                 </tbody>
             </table>
