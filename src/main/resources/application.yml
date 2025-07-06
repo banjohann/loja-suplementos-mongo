@@ -1,6 +1,4 @@
 spring:
-  profiles:
-    active: mongo
   data:
     mongodb:
       host: localhost
@@ -21,3 +19,16 @@ server:
       tracking-modes: cookie
   error:
     path: /error
+---
+spring:
+  config:
+    activate:
+      on-profile: docker
+  data:
+    mongodb:
+      host: mongodb
+      port: 27017
+      database: loja-suplementos
+      username: mongodb-admin
+      password: umasenhanadasegura
+      authentication-database: admin

@@ -1,47 +1,29 @@
 # Loja de Suplementos
 
-## Pré-requisitos
-- Java 17 ou superior
-- Maven (ou utilize o Maven Wrapper incluído no projeto)
-
-## Configurando o banco
-
-### Usando o docker
-   ```bash
-   docker compose up -d 
-   ```
-
-### Usando o PostgreSQL Local
-1. **Criar o banco de dados**:
-```sql
-    CREATE DATABASE loja-suplementos;
-    CREATE SCHEMA public;
-```
-
-2. **Configure as propriedades do banco de dados no arquivo `src/main/resources/application.properties`:**
-```properties
-    url: jdbc:postgresql://localhost:5432/loja-suplementos
-    username: userdobanco
-    password: senhadobanco
-```
-
-3. **Opcional**: Executar o dump.sql para popular o banco de dados com dados iniciais:
+## Docker
+Para simplificar a execução do projeto, disponibilizamos uma versão containerizada da aplicação.
+Para executar basta rodar o comando, garantindo que o Docker esteja previamente instalado:
 ```bash
-    psql -U userdobanco -d loja-suplementos -f dump.sql
+docker compose up -d
 ```
 
-## Build e Execução
+Esse comando irá executar um container com o banco MongoDB e subir a aplicação java.
+Após isso, poderá ser acessado via navegador na url `localhost:8080`
 
-### Usando o Maven Wrapper
-1. **Build do projeto e download das dependências**:
-   ```bash
-   ./mvnw clean install
-    ```
+## Build e Execução Manual
 
-2. **Executar a aplicação**:
-    ```bash
-    java -jar target/loja-suplentes-0.0.1-SNAPSHOT.jar
-    ```
+### Requisitos
+- Java 17 ou superior
+- Docker
 
-3. **Acessar a aplicação**:
-   - Acesse `http://localhost:8080` no seu navegador.TEste
+Para subir o container com o banco MongoDB, execute o comando abaixo:
+```bash
+docker compose up -d mongodb
+```
+
+Em seguida é possível compilar e executar a aplicação java através do comando:
+```bash
+    ./mvnw spring-boot:run
+```
+
+Acesse a aplicação através `http://localhost:8080` no seu navegador.

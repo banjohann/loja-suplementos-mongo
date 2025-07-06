@@ -30,7 +30,7 @@ public class SaleReportService {
         for (Sale sale : allSales) {
             if (sale.getShipping().getDeliveryAddress() != null) {
                 String city = sale.getShipping().getDeliveryAddress().getCity();
-                Double value = sale.getPayment().getAmount() != null ? sale.getPayment().getAmount().doubleValue() : 0.0;
+                double value = sale.getPayment().getAmount() != null ? sale.getPayment().getAmount().doubleValue() : 0.0;
 
                 CityStatsDTO stats = cityStatsMap.getOrDefault(city, new CityStatsDTO(city));
                 stats.addSale(value);
@@ -38,7 +38,7 @@ public class SaleReportService {
             }
         }
 
-        List<Map<String, Object>> result = cityStatsMap.values().stream()
+        return cityStatsMap.values().stream()
             .map(stats -> {
                 Map<String, Object> map = new HashMap<>();
                 map.put("city", stats.getCity());
@@ -48,8 +48,6 @@ public class SaleReportService {
             })
             .sorted((a, b) -> Integer.compare((Integer) b.get("totalSales"), (Integer) a.get("totalSales")))
             .collect(Collectors.toList());
-
-        return result;
     }
 
     public List<ClientPurchaseReportDTO> getClientsWithMostPurchaseValue() {

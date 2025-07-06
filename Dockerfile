@@ -1,19 +1,16 @@
-# Build stage
 FROM eclipse-temurin:17-jdk AS build
 WORKDIR /app
 
-# Copy Maven configuration files
 COPY pom.xml .
 COPY mvnw .
 COPY .mvn .mvn
 
-# Download dependencies (cached if pom.xml doesn't change)
 RUN ./mvnw dependency:go-offline -B
 
-# Copy source code
 COPY src ./src
 
-# Build the application
+ENV SPRING_PROFILES_ACTIVE=docker
+
 RUN ./mvnw package -DskipTests
 
 # Run stage
