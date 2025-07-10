@@ -46,7 +46,7 @@ public class SaleReportService {
                 map.put("totalSalesValue", String.format("%.2f", stats.getTotalValue()));
                 return map;
             })
-            .sorted((a, b) -> Integer.compare((Integer) b.get("totalSales"), (Integer) a.get("totalSales")))
+            .sorted((a, b) -> Integer.compare((Integer) b.get("salesCount"), (Integer) a.get("salesCount")))
             .collect(Collectors.toList());
     }
 
