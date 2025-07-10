@@ -45,12 +45,8 @@ public class SaleController {
     @GetMapping("/{id}")
     public String detail(@PathVariable String id, Model model) {
         var sale = service.findById(id);
-        var totalPrice = sale.getSaleItems().stream()
-                .map(item -> item.getPrice().multiply(new BigDecimal(item.getQuantity())))
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         model.addAttribute("sale", sale);
-        model.addAttribute("totalPrice", totalPrice);
         return "sales/details";
     }
 

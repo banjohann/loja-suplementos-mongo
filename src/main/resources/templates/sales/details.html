@@ -36,17 +36,32 @@
                     </tbody>
                 </table>
             </div>
+            <hr class="my-6 border-gray-300">
+            <div class="mb-4">
+                <h2 class="text-lg font-semibold">Detalhes da Entrega</h2>
+                <p><strong>Código de Rastreamento:</strong> <span th:text="${sale.shipping.trackingNumber}"></span></p>
+                <p><strong>Status da Entrega:</strong> <span th:text="${sale.shipping.status.getDescritption()}"></span></p>
+                <p><strong>Descrição do Status:</strong> <span th:text="${sale.shipping.statusDescription}"></span></p>
+                <p><strong>Endereço de Entrega:</strong> <span th:text="${sale.shipping.deliveryAddress.getFullAddress()}"></span></p>
+            </div>
+            <hr class="my-6 border-gray-300">
+            <div class="mb-4">
+                <h2 class="text-lg font-semibold">Detalhes do Pagamento</h2>
+                <p><strong>Método de Pagamento:</strong> <span th:text="${sale.payment.paymentMethod.getDescription()}"></span></p>
+                <p><strong>Valor:</strong> <span th:text="${sale.payment.amount}"></span></p>
+                <p><strong>Status do Pagamento:</strong> <span th:text="${sale.payment.status.getDescription()}"></span></p>
+                <p><strong>Data da Transação:</strong> <span th:text="${#dates.format(sale.payment.transactionDate, 'dd/MM/yyyy HH:mm')}"></span></p>
+            </div>
+            <hr class="my-6 border-gray-300">
             <div class="mb-4">
                 <h2 class="text-lg font-semibold">Resumo</h2>
-                <p><strong>Valor Total:</strong> <span th:text="${totalPrice}"></span></p>
+                <p><strong>Valor Total:</strong> <span th:text="${sale.payment.getAmount()}"></span></p>
                 <p><strong>Status da Entrega:</strong> <span th:text="${sale.shipping.status.getDescritption()}"></span></p>
                 <p><strong>Status do Pagamento:</strong> <span th:text="${sale.payment.status.getDescription()}"></span></p>
                 <p><strong>Método de Pagamento:</strong> <span th:text="${sale.payment.getPaymentMethod().getDescription()}"></span></p>
             </div>
             <div class="mt-4">
                 <a th:href="@{/sales}" class="bg-gray-500 text-white px-4 py-2 rounded">Voltar</a>
-                <a th:href="@{/shipping/{id}(id=${sale.shipping.id})}" class="bg-blue-500 text-white px-4 py-2 rounded">Detalhes da Entrega</a>
-                <a th:href="@{/payments/{id}(id=${sale.payment.id})}" class="bg-green-500 text-white px-4 py-2 rounded">Detalhes do Pagamento</a>
             </div>
         </div>
     </body>
